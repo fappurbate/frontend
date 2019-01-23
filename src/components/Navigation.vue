@@ -18,6 +18,11 @@
           <v-list-tile-content>
             <v-list-tile-title>{{ item.name }}</v-list-tile-title>
           </v-list-tile-content>
+          <v-list-tile-action v-if="item.onUpdate">
+            <v-btn icon riple @click="item.onUpdate">
+              <v-icon>refresh</v-icon>
+            </v-btn>
+          </v-list-tile-action>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
@@ -25,8 +30,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
   data: () => ({
     drawer: null
@@ -37,7 +40,10 @@ export default {
         {
           name: 'Tippers',
           path: `/${this.broadcaster}/tippers`,
-          icon: 'money'
+          icon: 'attach_money',
+          onUpdate() {
+            // this.dispatch('tippers/update');
+          }
         },
         {
           name: 'Translations',
@@ -47,16 +53,13 @@ export default {
         {
           name: 'Animation',
           path: `/${this.broadcaster}/animation`,
-          icon: 'movie',
-          disabled: true
+          icon: 'movie'
         }
       ];
     },
-    ...mapState({
-      broadcaster() {
-        return this.$route.params.broadcaster;
-      }
-    })
+    broadcaster() {
+      return this.$route.params.broadcaster;
+    }
   }
 }
 </script>

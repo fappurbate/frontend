@@ -1,7 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Start from './views/Start.vue';
-import Dashboard from './views/Dashboard.vue';
+import Start from './views/Start';
+import Dashboard from './views/Dashboard';
+import Tippers from './views/Tippers';
+import Translations from './views/Translations';
+import Animation from './views/Animation';
 
 Vue.use(Router);
 
@@ -18,6 +21,21 @@ export default new Router({
       path: '/:broadcaster',
       name: 'dashboard',
       component: Dashboard
+    },
+    {
+      path: '/:broadcaster/tippers',
+      name: 'tippers',
+      component: Tippers
+    },
+    {
+      path: '/:broadcaster/translations',
+      name: 'translations',
+      component: Translations
+    },
+    {
+      path: '/:broadcaster/animation',
+      name: 'animation',
+      component: Animation
     }
   ]
 });

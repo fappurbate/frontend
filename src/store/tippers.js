@@ -22,11 +22,11 @@ export default {
     }
   },
   actions: {
-    async update(context) {
+    async update(context, broadcaster) {
       context.commit('request');
 
       try {
-        const response = await axios.get(`/api/broadcasters`);
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/tippers`);
         context.commit('success', response.data);
       } catch (error) {
         context.commit('failure', error.response.data);
