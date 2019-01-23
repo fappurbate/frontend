@@ -22,14 +22,14 @@ export default {
     }
   },
   actions: {
-    async update() {
-      this.commit('broadcasters/request');
+    async update(context) {
+      context.commit('request');
 
       try {
         const response = await axios.get(`http://${window.location.host}/api/broadcasters`);
-        this.commit('broadcasters/success', response.data);
+        context.commit('success', response.data);
       } catch (error) {
-        this.commit('broadcasters/failure', error.response.data);
+        context.commit('failure', error.response.data);
       }
     }
   }

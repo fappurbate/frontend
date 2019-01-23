@@ -1,19 +1,18 @@
 <template>
   <fragment>
-    <Toolbar></Toolbar>
+    <Navigation></Navigation>
 
     <v-content>
-      <code>{{ $route.params.broadcaster }}</code>
     </v-content>
   </fragment>
 </template>
 
 <script>
-import Toolbar from '../components/Toolbar';
+import Navigation from '../components/Navigation';
 
 export default {
   components: {
-    Toolbar
+    Navigation
   }
 }
 </script>

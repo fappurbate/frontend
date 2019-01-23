@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import './plugins/vuetify';
-import App from './App.vue';
+import './plugins/fragment';
+import App from './App';
 import router from './router';
 import store from './store';
 
