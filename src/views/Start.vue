@@ -13,9 +13,6 @@ import BroadcasterChooser from '../components/BroadcasterChooser';
 export default {
   components: {
     BroadcasterChooser
-  },
-  created() {
-    this.$store.dispatch('broadcasters/update');
   }
 }
 </script>

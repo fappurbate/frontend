@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -26,10 +26,7 @@ export default {
   methods: {
     onChange(broadcaster) {
       this.$router.push({ name: 'dashboard', params: { broadcaster }});
-    },
-    ...mapActions({
-      update: 'broadcasters/update'
-    })
+    }
   }
 }
 </script>

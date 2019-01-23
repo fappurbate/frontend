@@ -4,6 +4,24 @@
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Kothique Chaturbate Kit</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-menu offset-y>
+          <v-btn flat slot="activator">
+            {{ broadcaster }}
+          </v-btn>
+          <v-list>
+            <v-list-tile
+                v-for="broadcaster of broadcasters"
+                :key="broadcaster.username"
+                @click="onChangeBroadcaster(broadcaster.username)">
+              <v-list-tile-title>{{ broadcaster.username }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+        <v-btn icon @click="$router.push({ name: 'start' })">
+          <v-icon>exit_to_app</v-icon>
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
 
     <v-navigation-drawer class="elevation-8"
@@ -30,6 +48,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data: () => ({
     drawer: null
@@ -59,6 +79,14 @@ export default {
     },
     broadcaster() {
       return this.$route.params.broadcaster;
+    },
+    ...mapState({
+      broadcasters: state => state.broadcasters.data
+    })
+  },
+  methods: {
+    onChangeBroadcaster(broadcaster) {
+      this.$router.push({ name: 'dashboard', params: { broadcaster }});
     }
   }
 }
