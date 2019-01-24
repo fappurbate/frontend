@@ -3,10 +3,14 @@ module.exports = {
     proxy: {
       '^/api': {
         target: 'https://localhost:8887',
-        ws: true,
         changeOrigin: true
+      },
+      '^/ws': {
+        target: 'wss://localhost:8888',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: { '^/ws': '' }
       }
     }
   }
 };
-// module.exports = {};
