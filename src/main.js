@@ -4,6 +4,7 @@ import './plugins/fragment';
 import App from './App';
 import router from './router';
 import store from './store';
+import './common/ws';
 
 Vue.config.productionTip = false;
 

@@ -37,7 +37,7 @@
             <v-list-tile-title>{{ item.name }}</v-list-tile-title>
           </v-list-tile-content>
           <v-list-tile-action v-if="item.onUpdate">
-            <v-btn icon riple @click="item.onUpdate">
+            <v-btn fab small flat @click="item.onUpdate">
               <v-icon>refresh</v-icon>
             </v-btn>
           </v-list-tile-action>
@@ -61,19 +61,23 @@ export default {
           name: 'Tippers',
           path: `/${this.broadcaster}/tippers`,
           icon: 'attach_money',
-          onUpdate() {
-            // this.dispatch('tippers/update');
+          onUpdate: () => {
+            this.$store.dispatch('tippers/update', this.broadcaster);
           }
         },
         {
           name: 'Translations',
           path: `/${this.broadcaster}/translations`,
-          icon: 'translate'
+          icon: 'translate',
+          onUpdate: () => {
+            this.$store.dispatch('translations/update', this.broadcaster);
+          }
         },
         {
           name: 'Animation',
           path: `/${this.broadcaster}/animation`,
-          icon: 'movie'
+          icon: 'movie',
+          disabled: true
         }
       ];
     },

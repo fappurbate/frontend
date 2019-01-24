@@ -22,6 +22,7 @@ export default {
     }
   },
   actions: {
+    $init(context, store) { },
     async update(context, broadcaster) {
       context.commit('request');
 
