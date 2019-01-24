@@ -25,7 +25,7 @@
     </v-toolbar>
 
     <v-navigation-drawer class="elevation-8"
-        v-model="drawer" enable-resize-watcher floating app clipped>
+        v-model="drawer" floating app clipped>
       <v-list class="pt-0">
         <v-list-tile ripple :disabled="item.disabled"
             @click="$router.push(item.path)"
@@ -86,7 +86,8 @@ export default {
   },
   methods: {
     onChangeBroadcaster(broadcaster) {
-      this.$router.push({ name: 'dashboard', params: { broadcaster }});
+      const name = this.$route.matched[0].name;
+      this.$router.push({ name, params: { broadcaster }});
     }
   }
 }

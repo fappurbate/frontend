@@ -18,9 +18,6 @@
 import { mapState } from 'vuex';
 
 export default {
-  created() {
-    this.$store.dispatch('tippers/update', this.$route.params.broadcaster);
-  },
   computed: {
     ...mapState({
       tippers: state => state.tippers.data

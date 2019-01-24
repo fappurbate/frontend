@@ -18,6 +18,13 @@ export default {
   components: {
     Navigation,
     TippersList
+  },
+  created() {
+    this.$store.dispatch('tippers/update', this.$route.params.broadcaster);
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.$store.dispatch('tippers/update', to.params.broadcaster);
+    next();
   }
 }
 </script>
