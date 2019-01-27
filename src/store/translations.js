@@ -4,7 +4,7 @@ import { spawnNotification } from '../common/util';
 
 const sym = Symbol();
 
-const store = {
+export default {
   namespaced: true,
   state: {
     loading: false,
@@ -87,5 +87,3 @@ const store = {
     }
   }
 };
-
-export default store;
