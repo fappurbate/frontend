@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Start from './views/Start';
 import Dashboard from './views/Dashboard';
+import Extensions from './views/Extensions';
 import Tippers from './views/Tippers';
 import Translations from './views/Translations';
 import Animation from './views/Animation';
@@ -36,6 +37,11 @@ export default new Router({
       path: '/:broadcaster/animation',
       name: 'animation',
       component: Animation
+    },
+    {
+      path: '/:broadcaster/extensions',
+      name: 'extensions',
+      component: Extensions
     }
   ]
 });

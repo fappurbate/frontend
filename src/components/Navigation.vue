@@ -78,6 +78,14 @@ export default {
           path: `/${this.broadcaster}/animation`,
           icon: 'movie',
           disabled: true
+        },
+        {
+          name: 'Extensions',
+          path: `/${this.broadcaster}/extensions`,
+          icon: 'extension',
+          onUpdate: () => {
+            this.$store.dispatch('extensions/update');
+          }
         }
       ];
     },

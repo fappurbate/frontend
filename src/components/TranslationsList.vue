@@ -9,12 +9,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Translation from './Translation';
 
 export default {
-  props: ['translations'],
   components: {
     Translation
+  },
+  computed: {
+    ...mapState({
+      translations: state => state.translations.data
+    })
   }
 }
 </script>

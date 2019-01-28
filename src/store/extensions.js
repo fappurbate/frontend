@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Vue from 'vue';
 
 export default {
   namespaced: true,
@@ -27,7 +28,7 @@ export default {
       context.commit('request');
 
       try {
-        const response = await axios.get(`/api/broadcasters`);
+        const response = await axios.get(`/api/extensions`);
         context.commit('success', response.data);
       } catch (error) {
         context.commit('failure', error.response.data);
