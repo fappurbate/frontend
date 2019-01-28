@@ -10,13 +10,18 @@
     </v-card-text>
     <v-card-actions>
       <v-btn flat>Details</v-btn>
-      <v-btn flat>Remove</v-btn>
+      <v-btn flat @click="onRemove(extension)">Remove</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 export default {
-  props: ['extension']
+  props: ['extension'],
+  methods: {
+    onRemove(extension) {
+      this.$store.dispatch('extensions/remove', extension._id);
+    }
+  }
 };
 </script>

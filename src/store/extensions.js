@@ -20,6 +20,13 @@ export default {
     failure(state, error) {
       state.loading = false;
       state.error = error;
+    },
+
+    remove(state, id) {
+      const index = state.data.findIndex(ext => ext._id === id);
+      if (index !== -1) {
+        state.data.splice(index, 1);
+      }
     }
   },
   actions: {
@@ -32,6 +39,15 @@ export default {
         context.commit('success', response.data);
       } catch (error) {
         context.commit('failure', error.response.data);
+      }
+    },
+    async remove(context, id) {
+      context.commit('remove', id);
+
+      try {
+        await axios.delete(`/api/extension/${id}`);
+      } catch (error) {
+        console.error(`Failed to remove extension.`, error);
       }
     }
   }

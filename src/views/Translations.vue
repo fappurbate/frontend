@@ -4,7 +4,7 @@
 
     <v-content>
       <v-container>
-        <TranslationsList :translations="translations"/>
+        <TranslationsList />
       </v-container>
     </v-content>
   </fragment>
