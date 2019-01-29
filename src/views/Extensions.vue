@@ -21,7 +21,11 @@ export default {
     ExtensionsGrid
   },
   created() {
-    this.$store.dispatch('extensions/update');
+    this.$store.dispatch('extensions/update', this.$route.params.broadcaster);
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.$store.dispatch('extensions/update', to.params.broadcaster);
+    next();
   }
 };
 </script>

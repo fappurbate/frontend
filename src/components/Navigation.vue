@@ -84,7 +84,7 @@ export default {
           path: `/${this.broadcaster}/extensions`,
           icon: 'extension',
           onUpdate: () => {
-            this.$store.dispatch('extensions/update');
+            this.$store.dispatch('extensions/update', this.broadcaster);
           }
         }
       ];
