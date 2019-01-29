@@ -76,7 +76,12 @@ export default {
         const response = await axios.get(`/api/broadcaster/${broadcaster}/translations`);
         context.commit('success', response.data);
       } catch (error) {
-        context.commit('failure', error.response.data);
+        console.error(`Failed to update translations.`, error);
+        if (error.response) {
+          context.commit('failure', error.response.data);
+        } else {
+          context.commit('failure', error.message);
+        }
       }
     },
     translate(context, data) {

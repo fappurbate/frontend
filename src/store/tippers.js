@@ -58,7 +58,12 @@ export default {
         const response = await axios.get(`/api/broadcaster/${broadcaster}/tippers`);
         context.commit('success', response.data);
       } catch (error) {
-        context.commit('failure', error.response.data);
+        console.error(`Failed to update tippers.`, error);
+        if (error.response) {
+          context.commit('failure', error.response.data);
+        } else {
+          context.commit('failure', error.message);
+        }
       }
     }
   }

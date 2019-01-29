@@ -3,6 +3,7 @@
     <Navigation />
 
     <v-content>
+      <ExtensionsToolbar />
       <ExtensionsGrid />
     </v-content>
   </fragment>
@@ -10,11 +11,13 @@
 
 <script>
 import Navigation from '../components/Navigation';
+import ExtensionsToolbar from '../components/ExtensionsToolbar';
 import ExtensionsGrid from '../components/ExtensionsGrid';
 
 export default {
   components: {
     Navigation,
+    ExtensionsToolbar,
     ExtensionsGrid
   },
   created() {
