@@ -1,6 +1,6 @@
 <template>
   <v-btn flat :loading="loading" @click="onClick">
-    Stop
+    {{ running ? 'Stop' : 'Start' }}
 
     <v-dialog v-model="showError" width="400px">
       <v-card>
@@ -8,7 +8,7 @@
           Error
         </v-card-title>
         <v-card-text>
-          Failed to stop extension: {{ error }}.
+          Failed to {{ running ? 'stop' : 'start' }} extension: {{ error }}.
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -27,21 +27,29 @@ import { mapState } from 'vuex';
 export default {
   props: ['extension'],
   data: () => ({
+    loading: false,
+    error: null,
     showError: false
   }),
+  computed: {
+    running: state => state.extension.running
+  },
   methods: {
     async onClick() {
-      await this.$store.dispatch('extensions/stop', { id: this.extension._id });
-      if (this.error) {
+      this.loading = true;
+
+      const action = this.running ? 'stop' : 'start';
+
+      try {
+        await this.$store.dispatch(`extensions/${action}`, { id: this.extension._id });
+        this.error = null;
+      } catch (error) {
+        this.error = error.message;
         this.showError = true;
+      } finally {
+        this.loading = false;
       }
     }
-  },
-  computed: {
-    ...mapState({
-      loading: state => state.extensions.stop.loading,
-      error: state => state.extensions.stop.error
-    })
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <v-btn flat :loading="loading" @click="onClick">
-    Start
+    Remove
 
     <v-dialog v-model="showError" width="400px">
       <v-card>
@@ -8,7 +8,7 @@
           Error
         </v-card-title>
         <v-card-text>
-          Failed to start extension: {{ error }}.
+          Failed to remove extension: {{ error }}.
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -27,21 +27,24 @@ import { mapState } from 'vuex';
 export default {
   props: ['extension'],
   data: () => ({
+    loading: false,
+    error: null,
     showError: false
   }),
   methods: {
     async onClick() {
-      await this.$store.dispatch('extensions/start', { id: this.extension._id });
-      if (this.error) {
+      this.loading = true;
+
+      try {
+        await this.$store.dispatch(`extensions/remove`, { id: this.extension._id });
+        this.error = null;
+      } catch (error) {
+        this.error = error.message;
         this.showError = true;
+      } finally {
+        this.loading = false;
       }
     }
-  },
-  computed: {
-    ...mapState({
-      loading: state => state.extensions.start.loading,
-      error: state => state.extensions.start.error
-    })
   }
 };
 </script>

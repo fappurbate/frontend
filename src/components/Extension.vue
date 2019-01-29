@@ -8,28 +8,21 @@
     </v-card-title>
     <v-card-actions>
       <v-btn flat>Details</v-btn>
-      <v-btn flat @click="onRemove(extension)">Remove</v-btn>
-
-      <ExtensionStopButton v-if="extension.running" :extension="extension" />
-      <ExtensionStartButton v-else :extension="extension" />
+      <ExtensionRemoveButton :extension="extension" />
+      <ExtensionPowerButton :extension="extension" />
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import ExtensionStartButton from './ExtensionStartButton';
-import ExtensionStopButton from './ExtensionStopButton';
+import ExtensionPowerButton from './ExtensionPowerButton';
+import ExtensionRemoveButton from './ExtensionRemoveButton';
 
 export default {
   components: {
-    ExtensionStartButton,
-    ExtensionStopButton
+    ExtensionPowerButton,
+    ExtensionRemoveButton
   },
-  props: ['extension'],
-  methods: {
-    onRemove(extension) {
-      this.$store.dispatch('extensions/remove', { id: extension._id });
-    }
-  }
+  props: ['extension']
 };
 </script>
