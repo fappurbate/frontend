@@ -55,10 +55,15 @@ export default {
   },
   actions: {
     $init(context, store) {
+      WS.events.addEventListener('extension-install', event => {
+        const { extension } = event.detail;
+        context.commit('add', extension);
+      });
+
       WS.events.addEventListener('extension-remove', event => {
         const { extension } = event.detail;
         context.commit('remove', extension._id);
-      })
+      });
 
       WS.events.addEventListener('extension-start', event => {
         const { extension, broadcaster } = event.detail;
@@ -91,10 +96,6 @@ export default {
     },
     async install(context, { file }) {
       await context.dispatch('install/do', { file });
-
-      if (!context.state.install.error) {
-        await context.dispatch('update', context.state.currentBroadcaster);
-      }
     },
     async remove(context, { id }) {
       try {
