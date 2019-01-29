@@ -97,20 +97,12 @@ export default {
         id,
         broadcaster: context.state.currentBroadcaster
       });
-
-      if (!context.state.start.error) {
-        await context.commit('start', id);
-      }
     },
     async stop(context, { id }) {
       await context.dispatch('stop/do', {
         id,
         broadcaster: context.state.currentBroadcaster
       });
-
-      if (!context.state.stop.error) {
-        await context.commit('stop', id);
-      }
     }
   },
   modules: {
