@@ -76,8 +76,7 @@ export default {
         {
           name: 'Animation',
           path: `/${this.broadcaster}/animation`,
-          icon: 'movie',
-          disabled: true
+          icon: 'movie'
         },
         {
           name: 'Extensions',
