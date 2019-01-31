@@ -1,20 +1,12 @@
 <template>
-  <fragment>
-    <Navigation />
-
-    <v-content>
-      <ExtensionPage v-for="page, index of data" :key="index" :srcdoc="page" />
-    </v-content>
-  </fragment>
+  <ExtensionPage :srcdoc="data" />
 </template>
 
 <script>
-import Navigation from '../components/Navigation';
-import ExtensionPage from '../components/ExtensionPage';
+import ExtensionPage from '../../components/ExtensionPage';
 
 export default {
   components: {
-    Navigation,
     ExtensionPage
   },
   data: () => ({
@@ -23,11 +15,12 @@ export default {
     data: []
   }),
   methods: {
-    async getPages(broadcaster) {
+    async getPage(broadcaster) {
       this.loading = true;
 
       try {
-        this.data = await this.$store.dispatch('extensions/getStreamPages', {
+        this.data = await this.$store.dispatch('extensions/getSettingsPage', {
+          id: this.$route.params.extensionId,
           broadcaster: this.$route.params.broadcaster
         });
         this.error = null;
@@ -39,13 +32,13 @@ export default {
     }
   },
   async created() {
-    await this.getPages(this.$route.params.broadcaster);
+    await this.getPage(this.$route.params.broadcaster);
   },
   async beforeRouteUpdate(to, from, next) {
-    await this.getPages(to.params.broadcaster);
+    await this.getPage(to.params.broadcaster);
     next();
   }
-}
+};
 </script>
 
 <style scoped>

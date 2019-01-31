@@ -136,6 +136,52 @@ export default {
           throw new CustomError(error.message);
         }
       }
+    },
+
+    // This action can be called outside of Extensions view,
+    // so state.currentBroadcaster cannot be used.
+    async getFrontPage(context, { id, broadcaster }) {
+      try {
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/front`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to load broadcaster stream pages.`);
+        if (error.response) {
+          throw new CustomError(error.response.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
+    },
+    // This action can be called outside of Extensions view,
+    // so state.currentBroadcaster cannot be used.
+    async getSettingsPage(context, { id, broadcaster }) {
+      try {
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/settings`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to load broadcaster stream pages.`);
+        if (error.response) {
+          throw new CustomError(error.response.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
+    },
+    // This action can be called outside of Extensions view,
+    // so state.currentBroadcaster cannot be used.
+    async getStreamPages(context, { broadcaster }) {
+      try {
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/extensions/stream`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to load broadcaster stream pages.`);
+        if (error.response) {
+          throw new CustomError(error.response.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
     }
   },
   modules: {

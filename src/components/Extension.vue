@@ -9,7 +9,9 @@
     <v-card-actions>
       <ExtensionRemoveButton :extension="extension" />
       <ExtensionPowerButton :extension="extension" />
-      <v-btn v-if="extension.running" flat>Details</v-btn>
+      <v-btn v-if="extension.running" flat :to="`/${broadcaster}/extension/${extension._id}`">
+        Details
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -23,6 +25,11 @@ export default {
     ExtensionPowerButton,
     ExtensionRemoveButton
   },
-  props: ['extension']
+  props: ['extension'],
+  computed: {
+    broadcaster() {
+      return this.$route.params.broadcaster;
+    }
+  }
 };
 </script>

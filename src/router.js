@@ -3,6 +3,10 @@ import Router from 'vue-router';
 import Start from './views/Start';
 import Dashboard from './views/Dashboard';
 import Extensions from './views/Extensions';
+import ExtensionDetails from './views/ExtensionDetails';
+import ExtensionDetailsFront from './views/extension-details/Front';
+import ExtensionDetailsSettings from './views/extension-details/Settings';
+import ExtensionDetailsStats from './views/extension-details/Stats';
 import Tippers from './views/Tippers';
 import Translations from './views/Translations';
 import Animation from './views/Animation';
@@ -42,6 +46,28 @@ export default new Router({
       path: '/:broadcaster/extensions',
       name: 'extensions',
       component: Extensions
+    },
+    {
+      path: '/:broadcaster/extension/:extensionId',
+      component: ExtensionDetails,
+      children: [
+        {
+          path:  '',
+          component: ExtensionDetailsFront
+        },
+        {
+          path: 'front',
+          component: ExtensionDetailsFront
+        },
+        {
+          path: 'settings',
+          component: ExtensionDetailsSettings
+        },
+        {
+          path: 'stats',
+          component: ExtensionDetailsStats
+        }
+      ]
     }
   ]
 });
