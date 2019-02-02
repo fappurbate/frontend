@@ -1,12 +1,7 @@
 <template>
   <div :class="{ entry: true, [`entry-${entry.level}`]: true }">
-    <span class="timestamp">
-      {{ entry.timestamp }}:
-    </span>
-    <span>
-      {{ entry.message }}
-    </span>
-    <span v-if="showMeta">{{ entry.meta }}</span>
+    <pre><span class="font-weight-bold">{{ entry.timestamp }}:</span> {{ entry.message }}</pre>
+    <pre v-if="showMeta"><span class="font-weight-bold">Metadata:</span> {{ entry.meta }}</pre>
   </div>
 </template>
 
@@ -53,7 +48,8 @@ export default {
   background-color: #e6ee9c;
 }
 
-.timestamp {
-  font-weight: bold;
+pre {
+   word-wrap: break-word;
+   white-space: pre-wrap;
 }
 </style>
