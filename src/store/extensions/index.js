@@ -145,7 +145,7 @@ export default {
         const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/front`);
         return response.data;
       } catch (error) {
-        console.error(`Failed to load broadcaster stream pages.`);
+        console.error(`Failed to load extension front page.`, error);
         if (error.response) {
           throw new CustomError(error.response.data);
         } else {
@@ -160,7 +160,7 @@ export default {
         const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/settings`);
         return response.data;
       } catch (error) {
-        console.error(`Failed to load broadcaster stream pages.`);
+        console.error(`Failed to load extension settings page.`, error);
         if (error.response) {
           throw new CustomError(error.response.data);
         } else {
@@ -175,7 +175,22 @@ export default {
         const response = await axios.get(`/api/broadcaster/${broadcaster}/extensions/stream`);
         return response.data;
       } catch (error) {
-        console.error(`Failed to load broadcaster stream pages.`);
+        console.error(`Failed to load broadcaster stream pages.`, error);
+        if (error.response) {
+          throw new CustomError(error.response.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
+    },
+    // This action can be called outside of Extensions view,
+    // so state.currentBroadcaster cannot be used.
+    async getLogs(context, { id, broadcaster }) {
+      try {
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/logs?rows=500`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failde to load extension logs.`, error);
         if (error.response) {
           throw new CustomError(error.response.data);
         } else {
