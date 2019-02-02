@@ -6,7 +6,7 @@ import Extensions from './views/Extensions';
 import ExtensionDetails from './views/ExtensionDetails';
 import ExtensionDetailsFront from './views/extension-details/Front';
 import ExtensionDetailsSettings from './views/extension-details/Settings';
-import ExtensionDetailsStats from './views/extension-details/Stats';
+import ExtensionDetailsDebug from './views/extension-details/Debug';
 import Tippers from './views/Tippers';
 import Translations from './views/Translations';
 import Animation from './views/Animation';
@@ -64,8 +64,8 @@ export default new Router({
           component: ExtensionDetailsSettings
         },
         {
-          path: 'stats',
-          component: ExtensionDetailsStats
+          path: 'debug',
+          component: ExtensionDetailsDebug
         }
       ]
     }

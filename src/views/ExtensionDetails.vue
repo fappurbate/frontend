@@ -10,8 +10,8 @@
         <v-tab :to="`/${broadcaster}/extension/${extensionId}/settings`">
           Settings
         </v-tab>
-        <v-tab :to="`/${broadcaster}/extension/${extensionId}/stats`">
-          Stats
+        <v-tab :to="`/${broadcaster}/extension/${extensionId}/debug`">
+          Debug
         </v-tab>
       </v-tabs>
 
