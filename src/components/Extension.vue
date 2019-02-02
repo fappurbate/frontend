@@ -9,7 +9,7 @@
     <v-card-actions>
       <ExtensionRemoveButton :extension="extension" />
       <ExtensionPowerButton :extension="extension" />
-      <v-btn v-if="extension.running" flat :to="`/${broadcaster}/extension/${extension._id}`">
+      <v-btn flat :to="`/${broadcaster}/extension/${extension._id}`">
         Details
       </v-btn>
     </v-card-actions>
