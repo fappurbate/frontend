@@ -21,7 +21,7 @@ export default {
       try {
         this.data = await this.$store.dispatch('extensions/getSettingsPage', {
           id: this.$route.params.extensionId,
-          broadcaster: this.$route.params.broadcaster
+          broadcaster
         });
         this.error = null;
       } catch (error) {
