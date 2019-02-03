@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     ...mapState({
-      extensions: state => state.extensions.data
+      extensions: state => state.extensionsList.data
     })
   }
 };
