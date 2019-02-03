@@ -7,8 +7,8 @@
       </div>
     </v-card-title>
     <v-card-actions>
-      <ExtensionRemoveButton :extension="extension" />
-      <ExtensionPowerButton :extension="extension" />
+      <RemoveButton :extension="extension" />
+      <PowerButton :extension="extension" />
       <v-btn flat :to="`/${broadcaster}/extension/${extension._id}`">
         Details
       </v-btn>
@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import ExtensionPowerButton from './ExtensionPowerButton';
-import ExtensionRemoveButton from './ExtensionRemoveButton';
+import PowerButton from './PowerButton';
+import RemoveButton from './RemoveButton';
 
 export default {
   components: {
-    ExtensionPowerButton,
-    ExtensionRemoveButton
+    PowerButton,
+    RemoveButton
   },
   props: ['extension'],
   computed: {

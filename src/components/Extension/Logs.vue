@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import LogEntry from './ExtensionLogEntry';
+import LogEntry from './LogEntry';
 
 export default {
   components: {

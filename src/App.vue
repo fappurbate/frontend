@@ -6,8 +6,5 @@
 
 <script>
 export default {
-  created() {
-    this.$store.dispatch('broadcasters/update');
-  }
-}
+};
 </script>

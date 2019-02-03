@@ -9,7 +9,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Extension from './Extension';
+import Extension from '../Extension';
 
 export default {
   components: {

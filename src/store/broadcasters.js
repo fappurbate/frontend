@@ -22,7 +22,9 @@ export default {
     }
   },
   actions: {
-    $init(context, store) { },
+    $init(context, store) {
+      context.dispatch('update');
+    },
     async update(context) {
       context.commit('request');
 

@@ -1,14 +1,14 @@
 <template>
-  <ExtensionLogs class="logs" :logs="data" />
+  <Logs class="logs" :logs="data" />
 </template>
 
 <script>
-import ExtensionLogs from '../../components/ExtensionLogs';
+import Logs from '../../components/Extension/Logs';
 import * as WS from '../../common/ws';
 
 export default {
   components: {
-    ExtensionLogs
+    Logs
   },
   data: () => ({
     loading: false,

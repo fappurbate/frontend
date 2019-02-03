@@ -1,15 +1,15 @@
 <template>
   <v-toolbar dense flat>
-    <ExtensionsInstallButton />
+    <InstallButton />
   </v-toolbar>
 </template>
 
 <script>
-import ExtensionsInstallButton from './ExtensionsInstallButton';
+import InstallButton from '../Extension/InstallButton';
 
 export default {
   components: {
-    ExtensionsInstallButton
+    InstallButton
   }
 };
 </script>

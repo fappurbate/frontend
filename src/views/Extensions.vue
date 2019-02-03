@@ -3,22 +3,22 @@
     <Navigation />
 
     <v-content>
-      <ExtensionsToolbar />
-      <ExtensionsGrid />
+      <Toolbar />
+      <Grid />
     </v-content>
   </fragment>
 </template>
 
 <script>
 import Navigation from '../components/Navigation';
-import ExtensionsToolbar from '../components/ExtensionsToolbar';
-import ExtensionsGrid from '../components/ExtensionsGrid';
+import Toolbar from '../components/Extensions/Toolbar';
+import Grid from '../components/Extensions/Grid';
 
 export default {
   components: {
     Navigation,
-    ExtensionsToolbar,
-    ExtensionsGrid
+    Toolbar,
+    Grid
   },
   created() {
     this.$store.dispatch('extensionsList/update', this.$route.params.broadcaster);

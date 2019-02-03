@@ -1,13 +1,13 @@
 <template>
-  <ExtensionPage :srcdoc="data" />
+  <Frame :srcdoc="data" />
 </template>
 
 <script>
-import ExtensionPage from '../../components/ExtensionPage';
+import Frame from '../../components/Extension/Frame';
 
 export default {
   components: {
-    ExtensionPage
+    Frame
   },
   data: () => ({
     loading: false,
@@ -19,7 +19,7 @@ export default {
       this.loading = true;
 
       try {
-        this.data = await this.$store.dispatch('extension/getFrontPage', {
+        this.data = await this.$store.dispatch('extension/getSettingsPage', {
           id: this.$route.params.extensionId,
           broadcaster
         });

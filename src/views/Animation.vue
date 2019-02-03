@@ -3,19 +3,19 @@
     <Navigation />
 
     <v-content>
-      <ExtensionPage v-for="page, index of data" :key="index" :srcdoc="page" />
+      <Frame v-for="page, index of data" :key="index" :srcdoc="page" />
     </v-content>
   </fragment>
 </template>
 
 <script>
 import Navigation from '../components/Navigation';
-import ExtensionPage from '../components/ExtensionPage';
+import Frame from '../components/Extension/Frame';
 
 export default {
   components: {
     Navigation,
-    ExtensionPage
+    Frame
   },
   data: () => ({
     loading: false,
