@@ -8,7 +8,7 @@
           Error
         </v-card-title>
         <v-card-text>
-          Failed to {{ running ? 'stop' : 'start' }} extension: {{ error }}.
+          Failed to {{ running ? 'stop' : 'start' }} extension: {{ error }}
         </v-card-text>
         <v-card-actions>
           <v-spacer />

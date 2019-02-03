@@ -8,7 +8,7 @@
           Error
         </v-card-title>
         <v-card-text>
-          Failed to remove extension: {{ error }}.
+          Failed to remove extension: {{ error }}
         </v-card-text>
         <v-card-actions>
           <v-spacer />

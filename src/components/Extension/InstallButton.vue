@@ -8,7 +8,7 @@
           Error
         </v-card-title>
         <v-card-text>
-          Failed to install extension: {{ error }}.
+          Failed to install extension: {{ error }}
         </v-card-text>
         <v-card-actions>
           <v-spacer />
