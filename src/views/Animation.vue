@@ -27,7 +27,7 @@ export default {
       this.loading = true;
 
       try {
-        this.data = await this.$store.dispatch('extensions/getStreamPages', {
+        this.data = await this.$store.dispatch('broadcaster/getStreamPages', {
           broadcaster: this.$route.params.broadcaster
         });
         this.error = null;

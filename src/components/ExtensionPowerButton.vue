@@ -41,7 +41,10 @@ export default {
       const action = this.running ? 'stop' : 'start';
 
       try {
-        await this.$store.dispatch(`extensions/${action}`, { id: this.extension._id });
+        await this.$store.dispatch(`extension/${action}`, {
+          id: this.extension._id,
+          broadcaster: this.$route.params.broadcaster
+        });
         this.error = null;
       } catch (error) {
         this.error = error.message;

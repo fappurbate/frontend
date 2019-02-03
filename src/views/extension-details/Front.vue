@@ -19,7 +19,7 @@ export default {
       this.loading = true;
 
       try {
-        this.data = await this.$store.dispatch('extensions/getFrontPage', {
+        this.data = await this.$store.dispatch('extension/getFrontPage', {
           id: this.$route.params.extensionId,
           broadcaster
         });

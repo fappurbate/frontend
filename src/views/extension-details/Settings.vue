@@ -19,7 +19,7 @@ export default {
       this.loading = true;
 
       try {
-        this.data = await this.$store.dispatch('extensions/getSettingsPage', {
+        this.data = await this.$store.dispatch('extension/getSettingsPage', {
           id: this.$route.params.extensionId,
           broadcaster
         });

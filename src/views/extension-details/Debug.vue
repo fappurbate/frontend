@@ -20,7 +20,7 @@ export default {
       this.loading = true;
 
       try {
-        this.data = await this.$store.dispatch('extensions/getLogs', {
+        this.data = await this.$store.dispatch('extension/getLogs', {
           id: this.$route.params.extensionId,
           broadcaster
         });

@@ -36,7 +36,7 @@ export default {
       this.loading = true;
 
       try {
-        await this.$store.dispatch(`extensions/remove`, { id: this.extension._id });
+        await this.$store.dispatch(`extension/remove`, { id: this.extension._id });
         this.error = null;
       } catch (error) {
         this.error = error.message;

@@ -42,7 +42,7 @@ export default {
     async onInput(file) {
       if (!file) { return; }
 
-      await this.$store.dispatch('extensions/install', { file });
+      await this.$store.dispatch('extension/install', { file });
       if (this.error) {
         this.showError = true;
       }
@@ -50,8 +50,8 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.extensions.install.loading,
-      error: state => state.extensions.install.error
+      loading: state => state.extension.install.loading,
+      error: state => state.extension.install.error
     })
   }
 };
