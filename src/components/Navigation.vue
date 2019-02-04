@@ -83,7 +83,7 @@ export default {
           path: `/${this.broadcaster}/extensions`,
           icon: 'extension',
           onUpdate: () => {
-            this.$store.dispatch('extensionsList/update', this.broadcaster);
+            this.$store.dispatch('extensionsPage/update', this.broadcaster);
           }
         }
       ];
@@ -98,7 +98,7 @@ export default {
   methods: {
     onChangeBroadcaster(broadcaster) {
       const name = this.$route.matched[0].name;
-      this.$router.push({ name, params: { broadcaster }});
+      this.$router.push({ name, params: { ...this.$route.params, broadcaster } });
     }
   }
 }

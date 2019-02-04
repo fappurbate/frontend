@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import InstallButton from '../Extension/InstallButton';
+import InstallButton from './InstallButton';
 
 export default {
   components: {

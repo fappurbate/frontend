@@ -10,7 +10,7 @@
 
 <script>
 import Navigation from '../components/Navigation';
-import Frame from '../components/Extension/Frame';
+import Frame from '../components/ExtensionFrame';
 
 export default {
   components: {

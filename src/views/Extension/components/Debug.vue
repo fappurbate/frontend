@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import Logs from '../../components/Extension/Logs';
-import * as WS from '../../common/ws';
+import Logs from '../../../components/ExtensionLogs';
+import * as WS from '../../../common/ws';
 
 export default {
   components: {
@@ -16,12 +16,17 @@ export default {
     data: []
   }),
   methods: {
-    async getLogs(broadcaster) {
+    async getLogs(options = {}) {
+      const {
+        id = this.$route.params.extensionId,
+        broadcaster = this.$route.params.broadcaster
+      } = options;
+
       this.loading = true;
 
       try {
         this.data = await this.$store.dispatch('extension/getLogs', {
-          id: this.$route.params.extensionId,
+          id,
           broadcaster
         });
         this.error = null;
@@ -32,22 +37,29 @@ export default {
       }
     },
     onLog(event) {
-      const { extension, info } = event.detail;
+      const { extension, info, broadcaster } = event.detail;
 
-      this.data.unshift(info);
+      if (extension._id === this.$route.params.extensionId &&
+          broadcaster === this.$route.params.broadcaster) {
+        this.data.unshift(info);
+      }
+    }
+  },
+  watch: {
+    async '$route.params.broadcaster'(to, from) {
+      await this.getLogs({ broadcaster: to });
+    },
+    async '$route.params.extensionId'(to, from) {
+      await this.getLogs({ id: to });
     }
   },
   async created() {
-    await this.getLogs(this.$route.params.broadcaster);
+    await this.getLogs();
 
     WS.events.addEventListener('extension-log', this.onLog);
   },
   beforeDestroy() {
     WS.events.removeEventListener('extension-log', this.onLog);
-  },
-  async beforeRouteUpdate(to, from, next) {
-    await this.getLogs(to.params.broadcaster);
-    next();
   }
 };
 </script>

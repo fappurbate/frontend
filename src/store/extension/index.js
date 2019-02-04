@@ -42,25 +42,12 @@ export default {
         }
       }
     },
-    async getFrontPage(context, { id, broadcaster }) {
+    async getPage(context, { id, broadcaster, name }) {
       try {
-        const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/front`);
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/page/${name}`);
         return response.data;
       } catch (error) {
         console.error(`Failed to load extension front page.`, error);
-        if (error.response) {
-          throw new CustomError(error.response.data);
-        } else {
-          throw new CustomError(error.message);
-        }
-      }
-    },
-    async getSettingsPage(context, { id, broadcaster }) {
-      try {
-        const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/settings`);
-        return response.data;
-      } catch (error) {
-        console.error(`Failed to load extension settings page.`, error);
         if (error.response) {
           throw new CustomError(error.response.data);
         } else {

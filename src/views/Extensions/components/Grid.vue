@@ -9,7 +9,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Extension from '../Extension';
+import Extension from '../../../components/Extension';
 
 export default {
   components: {
@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     ...mapState({
-      extensions: state => state.extensionsList.data
+      extensions: state => state.extensionsPage.data
     })
   }
 };

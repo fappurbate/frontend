@@ -2,11 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Start from './views/Start';
 import Dashboard from './views/Dashboard';
+import Extension from './views/Extension';
 import Extensions from './views/Extensions';
-import ExtensionDetails from './views/ExtensionDetails';
-import ExtensionDetailsFront from './views/ExtensionDetails/Front';
-import ExtensionDetailsSettings from './views/ExtensionDetails/Settings';
-import ExtensionDetailsDebug from './views/ExtensionDetails/Debug';
 import Tippers from './views/Tippers';
 import Translations from './views/Translations';
 import Animation from './views/Animation';
@@ -43,31 +40,14 @@ export default new Router({
       component: Animation
     },
     {
-      path: '/:broadcaster/extensions',
       name: 'extensions',
+      path: '/:broadcaster/extensions',
       component: Extensions
     },
     {
+      name: 'extension',
       path: '/:broadcaster/extension/:extensionId',
-      component: ExtensionDetails,
-      children: [
-        {
-          path:  '',
-          component: ExtensionDetailsFront
-        },
-        {
-          path: 'front',
-          component: ExtensionDetailsFront
-        },
-        {
-          path: 'settings',
-          component: ExtensionDetailsSettings
-        },
-        {
-          path: 'debug',
-          component: ExtensionDetailsDebug
-        }
-      ]
+      component: Extension
     }
   ]
 });

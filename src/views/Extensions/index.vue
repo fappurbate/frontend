@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import Navigation from '../components/Navigation';
-import Toolbar from '../components/Extensions/Toolbar';
-import Grid from '../components/Extensions/Grid';
+import Navigation from '../../components/Navigation';
+import Toolbar from './components/Toolbar';
+import Grid from './components/Grid';
 
 export default {
   components: {
@@ -21,10 +21,10 @@ export default {
     Grid
   },
   created() {
-    this.$store.dispatch('extensionsList/update', this.$route.params.broadcaster);
+    this.$store.dispatch('extensionsPage/update', this.$route.params.broadcaster);
   },
   beforeRouteUpdate(to, from, next) {
-    this.$store.dispatch('extensionsList/update', to.params.broadcaster);
+    this.$store.dispatch('extensionsPage/update', to.params.broadcaster);
     next();
   }
 };

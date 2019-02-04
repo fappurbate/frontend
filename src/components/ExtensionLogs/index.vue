@@ -1,15 +1,15 @@
 <template>
   <div>
-    <LogEntry v-for="entry of logs" :key="entry._id" :entry="entry" />
+    <Entry v-for="entry of logs" :key="entry._id" :entry="entry" />
   </div>
 </template>
 
 <script>
-import LogEntry from './LogEntry';
+import Entry from './Entry';
 
 export default {
   components: {
-    LogEntry
+    Entry
   },
   props: {
     logs: Array
