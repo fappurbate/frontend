@@ -26,7 +26,7 @@ function sendQueue() {
   }
 }
 
-function emit(subject, data) {
+export function emit(subject, data = null) {
   const msg = {
     type: 'event',
     subject,
@@ -134,11 +134,3 @@ function reconnect() {
 }
 
 connect();
-
-export function sendTranslation(tabId, msgId, translation) {
-  emit('translation', {
-    tabId,
-    msgId,
-    content: translation
-  });
-}

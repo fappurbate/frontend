@@ -8,12 +8,14 @@
           {{ name }}
         </v-tab>
       </v-tabs>
-
-      <div class="content">
-        <Page v-for="name of pageNames" :key="name" :name="name"
-          v-if="name in beenOpen" v-show="tabs[activeTab] === name" />
-        <Debug v-if="beenOpen.debug" v-show="tabs[activeTab] === 'debug'" />
-      </div>
+      <v-tabs-items v-model="activeTab">
+        <v-tab-item v-for="(name, index) of pageNames" :key="index">
+          <Page v-if="name in beenOpen" :name="name" />
+        </v-tab-item>
+        <v-tab-item :key="pageNames.length">
+          <Debug v-if="'debug' in beenOpen" />
+        </v-tab-item>
+      </v-tabs-items>
     </v-content>
   </fragment>
 </template>

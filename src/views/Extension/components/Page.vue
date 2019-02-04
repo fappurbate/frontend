@@ -36,7 +36,7 @@ export default {
       } catch (error) {
         this.error = error;
       } finally {
-        this.loading = false;
+      this.loading = false;
       }
     }
   },

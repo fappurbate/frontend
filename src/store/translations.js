@@ -88,7 +88,7 @@ export default {
       const { tabId, msgId, translation } = data;
 
       context.commit('remove', { tabId, msgId });
-      WS.sendTranslation(tabId, msgId, translation);
+      WS.emit('translation', { tabId, msgId, content: translation });
     }
   }
 };
