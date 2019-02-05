@@ -1,8 +1,9 @@
 <template>
-  <Frame :srcdoc="data" />
+  <Frame :srcdoc="pageWithData" />
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Frame from '../../../components/ExtensionFrame';
 
 export default {
@@ -12,10 +13,29 @@ export default {
   props: {
     name: String
   },
+  computed: {
+    ...mapState({
+      extension: state => state.extensionPage.data
+    }),
+    pageWithData() {
+      if (this.data === null) { return null; }
+
+      const toInject = `
+        <meta data-name="id" data-content="${this.$route.params.extensionId}" />
+        <meta data-name="name" data-content="${this.extension.name}" />
+        ${this.extension.version
+          ? '<meta data-name="version" data-content="${this.extension.version}" />'
+          : ''}
+        <meta data-name="broadcaster" data-content="${this.$route.params.broadcaster}" />
+      `;
+
+      return `${toInject}${this.data}`;
+    }
+  },
   data: () => ({
     loading: false,
     error: null,
-    data: []
+    data: null
   }),
   methods: {
     async getPage(options = {}) {
@@ -36,7 +56,7 @@ export default {
       } catch (error) {
         this.error = error;
       } finally {
-      this.loading = false;
+        this.loading = false;
       }
     }
   },
