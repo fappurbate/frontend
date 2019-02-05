@@ -1,9 +1,10 @@
-<template>
-  <Frame :srcdoc="pageWithData" />
+this.onExtensionEvent<template>
+  <Frame ref="frame" :srcdoc="pageWithData" />
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import * as WS from '../../../common/ws';
 import Frame from '../../../components/ExtensionFrame';
 
 export default {
@@ -35,7 +36,10 @@ export default {
   data: () => ({
     loading: false,
     error: null,
-    data: null
+    data: null,
+
+    onExtensionEvent: null,
+    onMessage: null
   }),
   methods: {
     async getPage(options = {}) {
@@ -58,6 +62,67 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    setupCommunication() {
+      window.addEventListener('message', this.onMessage = async event => {
+        if (event.source !== this.$refs.frame.$el.contentWindow) { return; }
+
+        if (event.data.subject === 'event') {
+          const { receivers, subject, data } = event.data.data;
+
+          WS.emit('extension-event', {
+            id: this.extension._id,
+            broadcaster: this.$route.params.broadcaster,
+            receivers,
+            sender: this.name,
+            subject,
+            ...data && { data }
+          });
+        } else if (event.data.subject === 'request') {
+          const { requestId, subject, data } = event.data.data;
+
+          try {
+            const result = await WS.request('extension-request', {
+              id: this.extension._id,
+              broadcaster: this.$route.params.broadcaster,
+              sender: this.name,
+              subject,
+              ...data && { data }
+            });
+
+            this.$refs.frame.$el.contentWindow.postMessage({
+              subject: 'response',
+              data: {
+                requestId,
+                data: result
+              }
+            }, '*');
+          } catch (error) {
+            this.$refs.frame.$el.contentWindow.postMessage({
+              subject: 'response',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            }, '*');
+          }
+        }
+      });
+
+      WS.events.addEventListener('extension-event', this.onExtensionEvent = event => {
+        const { id, broadcaster, receivers, sender, subject, data } = event.detail;
+
+        if (id !== this.extension._id || broadcaster !== this.$route.params.broadcaster ||
+            !receivers.includes(this.name)) {
+          return;
+        }
+
+        this.$refs.frame.$el.contentWindow.postMessage({
+          subject: 'event',
+          data: { subject, sender, data }
+        }, '*');
+      });
     }
   },
   watch: {
@@ -70,6 +135,11 @@ export default {
   },
   async created() {
     await this.getPage();
+    this.setupCommunication();
+  },
+  destroyed() {
+    WS.events.removeEventListener('extension-event', this.onExtensionEvent)
+    window.removeEventListener('message', this.onMessage);
   }
 };
 </script>

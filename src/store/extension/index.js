@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { CustomError } from '../../common/errors';
 import install from './install';
 
 export default {

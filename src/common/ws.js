@@ -1,4 +1,5 @@
-import RequestTarget from './request-target';
+import RequestTarget from '@kothique/request-target';
+
 import { CustomError } from './errors';
 
 const RECONNECT_INTERVAL = 2000;
@@ -39,7 +40,7 @@ export function emit(subject, data = null) {
 let nextRequestId = 0;
 const requests = {};
 
-async function request(subject, data) {
+export async function request(subject, data) {
   const requestId = nextRequestId++;
   const msg = {
     type: 'request',
