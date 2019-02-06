@@ -138,6 +138,17 @@ export default {
           data: { type, data }
         }, '*');
       });
+
+      WS.events.addEventListener('account-activity', this.onWSAccountActivity = event => {
+        const { username, type, data } = event.detail;
+
+        if (username !== this.$route.params.broadcaster) { return; }
+
+        this.$refs.frame.$el.contentWindow.postMessage({
+          subject: 'message',
+          data: { type, data }
+        }, '*');
+      });
     }
   },
   watch: {
@@ -153,6 +164,7 @@ export default {
     this.setupCommunication();
   },
   destroyed() {
+    WS.events.removeEventListener('account-activity', this.onWSAccountActivity);
     WS.events.removeEventListener('message', this.onWSMessage);
     WS.events.removeEventListener('extension-event', this.onWSExtensionEvent)
     window.removeEventListener('message', this.onFrameMessage);
