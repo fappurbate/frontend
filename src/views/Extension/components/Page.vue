@@ -38,8 +38,9 @@ export default {
     error: null,
     data: null,
 
-    onExtensionEvent: null,
-    onMessage: null
+    onFrameMessage: null,
+    onWSExtensionEvent: null,
+    onWSMessage: null
   }),
   methods: {
     async getPage(options = {}) {
@@ -64,7 +65,7 @@ export default {
       }
     },
     setupCommunication() {
-      window.addEventListener('message', this.onMessage = async event => {
+      window.addEventListener('message', this.onFrameMessage = async event => {
         if (event.source !== this.$refs.frame.$el.contentWindow) { return; }
 
         if (event.data.subject === 'event') {
@@ -110,7 +111,7 @@ export default {
         }
       });
 
-      WS.events.addEventListener('extension-event', this.onExtensionEvent = event => {
+      WS.events.addEventListener('extension-event', this.onWSExtensionEvent = event => {
         const { id, broadcaster, receivers, sender, subject, data } = event.detail;
 
         if (id !== this.extension._id || broadcaster !== this.$route.params.broadcaster ||
@@ -121,6 +122,20 @@ export default {
         this.$refs.frame.$el.contentWindow.postMessage({
           subject: 'event',
           data: { subject, sender, data }
+        }, '*');
+      });
+
+      WS.events.addEventListener('message', this.onWSMessage = event => {
+        const { info, type, data } = event.detail;
+
+        if (!info.broadcast.active || !info.chat.active || !info.chat.ready ||
+            info.chat.owner !== this.$route.params.broadcaster) {
+          return;
+        }
+
+        this.$refs.frame.$el.contentWindow.postMessage({
+          subject: 'message',
+          data: { type, data }
         }, '*');
       });
     }
@@ -138,8 +153,9 @@ export default {
     this.setupCommunication();
   },
   destroyed() {
-    WS.events.removeEventListener('extension-event', this.onExtensionEvent)
-    window.removeEventListener('message', this.onMessage);
+    WS.events.removeEventListener('message', this.onWSMessage);
+    WS.events.removeEventListener('extension-event', this.onWSExtensionEvent)
+    window.removeEventListener('message', this.onFrameMessage);
   }
 };
 </script>
