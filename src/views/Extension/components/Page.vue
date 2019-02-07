@@ -149,6 +149,26 @@ export default {
           data: { type, data }
         }, '*');
       });
+
+      WS.events.addEventListener('broadcast-start', this.onWSBroadcastStart = event => {
+        const { broadcaster } = event.detail;
+
+        if (broadcaster !== this.$route.params.broadcaster) { return; }
+
+        this.$refs.frame.$el.contentWindow.postMessage({
+          subject: 'broadcast-start'
+        }, '*');
+      });
+
+      WS.events.addEventListener('broadcast-stop', this.onWSBroadcastStop = event => {
+        const { broadcaster } = event.detail;
+
+        if (broadcaster !== this.$route.params.broadcaster) { return; }
+
+        this.$refs.frame.$el.contentWindow.postMessage({
+          subject: 'broadcast-stop'
+        }, '*');
+      });
     }
   },
   watch: {
@@ -164,6 +184,8 @@ export default {
     this.setupCommunication();
   },
   destroyed() {
+    WS.events.removeEventListener('broadcast-stop', this.onWSBroadcastStop);
+    WS.events.removeEventListener('broadcast-start', this.onWSBroadcastStart);
     WS.events.removeEventListener('account-activity', this.onWSAccountActivity);
     WS.events.removeEventListener('message', this.onWSMessage);
     WS.events.removeEventListener('extension-event', this.onWSExtensionEvent)
