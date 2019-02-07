@@ -43,12 +43,16 @@ export default {
   },
   actions: {
     $init(context, store) {
-      WS.events.addEventListener('tip', event => {
-        const { broadcaster, tipper, amount } = event.detail;
+      WS.events.addEventListener('message', event => {
+        const { info, type, data } = event.detail;
 
-        if (broadcaster !== context.state.currentBroadcaster) { return; }
+        if (type === 'tip') {
+          const { username, amount } = data;
 
-        context.commit('tip', { tipper, amount });
+          if (info.chat.owner !== context.state.currentBroadcaster) { return; }
+
+          context.commit('tip', { tipper: username, amount });
+        }
       });
     },
     async update(context, broadcaster) {
