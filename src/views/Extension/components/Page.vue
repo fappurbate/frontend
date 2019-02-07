@@ -140,13 +140,13 @@ export default {
       });
 
       WS.events.addEventListener('account-activity', this.onWSAccountActivity = event => {
-        const { username, type, data } = event.detail;
+        const { username, type, timestamp, data } = event.detail;
 
         if (username !== this.$route.params.broadcaster) { return; }
 
         this.$refs.frame.$el.contentWindow.postMessage({
-          subject: 'message',
-          data: { type, data }
+          subject: 'account-activity',
+          data: { type, timestamp: new Date(timestamp), data }
         }, '*');
       });
 
