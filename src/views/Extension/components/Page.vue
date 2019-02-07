@@ -108,6 +108,56 @@ export default {
               }
             }, '*');
           }
+        } else if (event.data.subject === 'is-broadcasting') {
+          const { requestId } = event.data.data;
+
+          try {
+            const result = await WS.request('is-broadcasting', {
+              broadcaster: this.$route.params.broadcaster
+            });
+
+            this.$refs.frame.$el.contentWindow.postMessage({
+              subject: 'is-broadcasting',
+              data: {
+                requestId,
+                data: result
+              }
+            }, '*');
+          } catch (error) {
+            this.$refs.frame.$el.contentWindow.postMessage({
+              subject: 'is-broadcasting',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            }, '*');
+          }
+        } else if (event.data.subject === 'is-extracting-account-activity') {
+          const { requestId } = event.data.data;
+
+          try {
+            const result = await WS.request('is-extracting-account-activity', {
+              username: this.$route.params.broadcaster
+            });
+
+            this.$refs.frame.$el.contentWindow.postMessage({
+              subject: 'is-extracting-account-activity',
+              data: {
+                requestId,
+                data: result
+              }
+            }, '*');
+          } catch (error) {
+            this.$refs.frame.$el.contentWindow.postMessage({
+              subject: 'is-extracting-account-activity',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            }, '*');
+          }
         }
       });
 
