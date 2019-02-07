@@ -25,8 +25,8 @@ export default {
         <meta data-name="id" data-content="${this.$route.params.extensionId}" />
         <meta data-name="name" data-content="${this.extension.name}" />
         ${this.extension.version
-          ? '<meta data-name="version" data-content="${this.extension.version}" />'
-          : ''}
+          ? `<meta data-name="version" data-content="${this.extension.version}" />`
+          : ``}
         <meta data-name="broadcaster" data-content="${this.$route.params.broadcaster}" />
       `;
 
@@ -169,6 +169,26 @@ export default {
           subject: 'broadcast-stop'
         }, '*');
       });
+
+      WS.events.addEventListener('extract-account-activity-start', this.onWSExtractAccountActivityStart = event => {
+        const { username } = event.detail;
+
+        if (username !== this.$route.params.broadcaster) { return; }
+
+        this.$refs.frame.$el.contentWindow.postMessage({
+          subject: 'extract-account-activity-start'
+        }, '*');
+      });
+
+      WS.events.addEventListener('extract-account-activity-stop', this.onWSExtractAccountActivityStop = event => {
+        const { username } = event.detail;
+
+        if (username !== this.$route.params.broadcaster) { return; }
+
+        this.$refs.frame.$el.contentWindow.postMessage({
+          subject: 'extract-account-activity-stop'
+        }, '*');
+      });
     }
   },
   watch: {
@@ -184,6 +204,8 @@ export default {
     this.setupCommunication();
   },
   destroyed() {
+    WS.events.removeEventListener('extract-account-activity-stop', this.onWSExtractAccountActivityStop);
+    WS.events.removeEventListener('extract-account-activity-start', this.onWSExtractAccountActivityStart);
     WS.events.removeEventListener('broadcast-stop', this.onWSBroadcastStop);
     WS.events.removeEventListener('broadcast-start', this.onWSBroadcastStart);
     WS.events.removeEventListener('account-activity', this.onWSAccountActivity);
