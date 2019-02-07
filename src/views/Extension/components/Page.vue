@@ -126,7 +126,7 @@ export default {
       });
 
       WS.events.addEventListener('message', this.onWSMessage = event => {
-        const { info, type, data } = event.detail;
+        const { info, type, timestamp, data } = event.detail;
 
         if (!info.broadcast.active || !info.chat.active || !info.chat.ready ||
             info.chat.owner !== this.$route.params.broadcaster) {
@@ -135,7 +135,7 @@ export default {
 
         this.$refs.frame.$el.contentWindow.postMessage({
           subject: 'message',
-          data: { type, data }
+          data: { type, timestamp: new Date(timestamp), data }
         }, '*');
       });
 

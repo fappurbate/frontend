@@ -44,7 +44,7 @@ export default {
   actions: {
     $init(context, store) {
       WS.events.addEventListener('message', event => {
-        const { info, type, data } = event.detail;
+        const { info, type, timestamp, data } = event.detail;
 
         if (type === 'tip') {
           const { username, amount } = data;
