@@ -69,6 +69,19 @@ export default {
         }
       }
     },
+    async getStreamInfo(context, { id, broadcaster }) {
+      try {
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/extension/${id}/stream`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to load extension stream info:`, error);
+        if (error.response) {
+          throw new CustomError(error.response.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
+    },
     install(context, { file }) {
       return context.dispatch('install/do', { file });
     }

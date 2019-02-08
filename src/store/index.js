@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import animationPage from './animation-page';
 import broadcaster from './broadcaster';
 import broadcasters from './broadcasters';
 import extension from './extension';
@@ -13,10 +14,12 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   plugins: [
-    store => ['broadcaster', 'broadcasters', 'extension', 'extensionPage', 'extensionsPage', 'tippers', 'translations']
+    store => ['animationPage', 'broadcaster', 'broadcasters', 'extension',
+        'extensionPage', 'extensionsPage', 'tippers', 'translations']
       .forEach(ns => store.dispatch(`${ns}/$init`, store))
   ],
   modules: {
+    animationPage,
     broadcaster,
     broadcasters,
     extension,

@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+import { CustomError } from '../common/errors';
+
 export default {
   namespaced: true,
   actions: {
     $init(context, store) { },
-    async getStreamPages(context, { broadcaster }) {
+    async getStreamInfo(context, { broadcaster }) {
       try {
         const response = await axios.get(`/api/broadcaster/${broadcaster}/extensions/stream`);
         return response.data;

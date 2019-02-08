@@ -3,12 +3,15 @@
     <Navigation />
 
     <v-content>
-      <Frame v-for="page, index of data" :key="index" :srcdoc="page" />
+      <Frame v-for="{ page, extension }, id in data" :key="id"
+        :srcdoc="page" :extension="extension" class="frame" />
+      <div class="overlay" @click.stop.prevent=""></div>
     </v-content>
   </fragment>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Navigation from '../components/Navigation';
 import Frame from '../components/ExtensionFrame';
 
@@ -17,36 +20,34 @@ export default {
     Navigation,
     Frame
   },
-  data: () => ({
-    loading: false,
-    error: null,
-    data: []
-  }),
-  methods: {
-    async getPages(broadcaster) {
-      this.loading = true;
-
-      try {
-        this.data = await this.$store.dispatch('broadcaster/getStreamPages', {
-          broadcaster: this.$route.params.broadcaster
-        });
-        this.error = null;
-      } catch (error) {
-        this.error = error;
-      } finally {
-        this.loading = false;
-      }
-    }
+  computed: {
+    ...mapState({
+      loading: state => state.animationPage.loading,
+      error: state => state.animationPage.error,
+      data: state => state.animationPage.data
+    })
   },
   async created() {
-    await this.getPages(this.$route.params.broadcaster);
+    await this.$store.dispatch('animationPage/update', {
+      broadcaster: this.$route.params.broadcaster
+    });
   },
   async beforeRouteUpdate(to, from, next) {
-    await this.getPages(to.params.broadcaster);
+    await this.$store.dispatch('animationPage/update', {
+      broadcaster: to.params.broadcaster
+    });
     next();
   }
 }
 </script>
 
 <style scoped>
+.overlay, .frame {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  height: 100%;
+}
 </style>
