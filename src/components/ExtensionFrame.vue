@@ -143,6 +143,13 @@ export default {
               }
             }, '*');
           }
+        } else if (event.data.subject === 'send-message') {
+          const { message } = event.data.data;
+
+          WS.emit('send-message', {
+            broadcaster: this.$route.params.broadcaster,
+            message
+          });
         }
       });
 
@@ -167,7 +174,7 @@ export default {
 
         if (!this.frameWindow) { return; }
 
-        if (!info.broadcast.active || !info.chat.active || !info.chat.ready ||
+        if (!info.broadcast.active || !info.chat.active ||
             info.chat.owner !== this.$route.params.broadcaster) {
           return;
         }
