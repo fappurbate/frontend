@@ -1,5 +1,5 @@
 <template>
-  <iframe v-if="srcdoc && extension" class="page" ref="frame" :srcdoc="finalSrcdoc"
+  <iframe v-if="ready" class="page" ref="frame" :srcdoc="finalSrcdoc"
     sandbox="allow-scripts" frameborder="0">
   </iframe>
 </template>
@@ -12,8 +12,13 @@ export default {
     srcdoc: String,
     extension: Object
   },
-  data: () => ({}),
+  data: () => ({
+    updated: false
+  }),
   computed: {
+    ready() {
+      return Boolean(this.updated && this.srcdoc && this.extension);
+    },
     finalSrcdoc() {
       if (!this.srcdoc) { return null; }
 
@@ -24,6 +29,8 @@ export default {
           ? `<meta data-name="version" data-content="${this.extension.version}" />`
           : ``}
         <meta data-name="broadcaster" data-content="${this.$route.params.broadcaster}" />
+        <meta data-name="init:is-broadcasting" data-content="${this.isBroadcasting}" />
+        <meta data-name="init:is-extracting-account-activity" data-content="${this.isExtractingAccountActivity}" />
       `;
 
       return `${toInject}${this.srcdoc}`;
@@ -33,6 +40,14 @@ export default {
     }
   },
   methods: {
+    async getInitialData() {
+      this.isBroadcasting = await WS.request('is-broadcasting', {
+        broadcaster: this.$route.params.broadcaster
+      });
+      this.isExtractingAccountActivity = await WS.request('is-extracting-account-activity', {
+        username: this.$route.params.broadcaster
+      });
+    },
     setupCommunication() {
       window.addEventListener('message', this.onFrameMessage = async event => {
         if (!this.frameWindow) { return; }
@@ -233,10 +248,21 @@ export default {
       WS.events.removeEventListener('message', this.onWSMessage);
       WS.events.removeEventListener('extension-event', this.onWSExtensionEvent)
       window.removeEventListener('message', this.onFrameMessage);
+    },
+    async update() {
+      this.updated = false;
+      await this.getInitialData();
+      this.updated = true;
     }
   },
-  created() {
+  watch: {
+    async srcdoc(to, from) {
+      await this.update();
+    }
+  },
+  async created() {
     this.setupCommunication();
+    await this.update();
   },
   destroyed() {
     this.teardownCommunication();
