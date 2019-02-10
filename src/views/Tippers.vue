@@ -1,22 +1,16 @@
 <template>
-  <fragment>
-    <Navigation></Navigation>
-
-    <v-content>
-      <v-container>
-        <TippersList />
-      </v-container>
-    </v-content>
-  </fragment>
+  <Layout>
+    <TippersList class="tippers-list" />
+  </Layout>
 </template>
 
 <script>
-import Navigation from '../components/Navigation';
+import Layout from '../components/Layout';
 import TippersList from '../components/TippersList';
 
 export default {
   components: {
-    Navigation,
+    Layout,
     TippersList
   },
   created() {
@@ -30,4 +24,7 @@ export default {
 </script>
 
 <style scoped>
+.tippers-list {
+  margin: 1.5rem;
+}
 </style>

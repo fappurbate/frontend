@@ -1,22 +1,16 @@
 <template>
-  <fragment>
-    <Navigation />
-
-    <v-content>
-      <v-container>
-        <TranslationsList />
-      </v-container>
-    </v-content>
-  </fragment>
+  <Layout>
+    <TranslationsList class="translations-list" />
+  </Layout>
 </template>
 
 <script>
-import Navigation from '../components/Navigation';
+import Layout from '../components/Layout';
 import TranslationsList from '../components/TranslationsList';
 
 export default {
   components: {
-    Navigation,
+    Layout,
     TranslationsList
   },
   created() {
@@ -30,4 +24,11 @@ export default {
 </script>
 
 <style scoped>
+.translations-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  margin: 1.5rem;
+}
 </style>

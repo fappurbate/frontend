@@ -1,23 +1,19 @@
 <template>
-  <fragment>
-    <Navigation />
-
-    <v-content>
-      <Frame v-for="{ page, extension }, id in data" :key="id"
-        :srcdoc="page" :extension="extension" class="frame" />
-      <div class="overlay" @click.stop.prevent=""></div>
-    </v-content>
-  </fragment>
+  <Layout>
+    <Frame v-for="{ page, extension }, id in data" :key="id"
+      :srcdoc="page" :extension="extension" class="frame" />
+    <div class="overlay" @click.stop.prevent=""></div>
+  </Layout>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import Navigation from '../components/Navigation';
+import Layout from '../components/Layout';
 import Frame from '../components/ExtensionFrame';
 
 export default {
   components: {
-    Navigation,
+    Layout,
     Frame
   },
   computed: {

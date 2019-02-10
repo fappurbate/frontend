@@ -1,19 +1,24 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div>
-        <h3 class="headline mb-0">{{ extension.name }}</h3>
-        <div>{{ extension.description }}</div>
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        {{ extension.name }}
+      </p>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        {{ extension.description }}
       </div>
-    </v-card-title>
-    <v-card-actions>
-      <RemoveButton :extension="extension" />
-      <PowerButton :extension="extension" />
-      <v-btn flat :to="`/${broadcaster}/extension/${extension._id}`">
+    </div>
+    <footer class="card-footer">
+      <RemoveButton :extension="extension" class="card-footer-item" />
+      <PowerButton :extension="extension" class="card-footer-item" />
+      <a @click="$router.push(`/${broadcaster}/extension/${extension._id}`)"
+          class="details card-footer-item">
         Details
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+      </a>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -33,3 +38,15 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../../main";
+
+a.details {
+  transition: color 200ms;
+}
+
+a.details:hover {
+  color: $secondary;
+}
+</style>

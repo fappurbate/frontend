@@ -1,0 +1,56 @@
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+$family-primary: 'Varela Round';
+$family-secondary: 'Varela Round';
+
+$navbar-breakpoint: 0;
+$navbar-height: 5rem;
+
+
+// Set your colors
+$primary: #1E152A;
+$primary-invert: findColorInvert($primary);
+$secondary: #5AB1BB;
+$secondary-invert: findColorInvert($secondary);
+$accent: #A63446;
+$accent-invert: findColorInvert($accent);
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: (
+    "white": ($white, $black),
+    "black": ($black, $white),
+    "light": ($light, $light-invert),
+    "dark": ($dark, $dark-invert),
+    "primary": ($primary, $primary-invert),
+    "secondary": ($secondary, $secondary-invert),
+    "accent": ($accent, $accent-invert),
+    "info": ($info, $info-invert),
+    "success": ($success, $success-invert),
+    "warning": ($warning, $warning-invert),
+    "danger": ($danger, $danger-invert)
+);
+
+$menu-item-active-color: $primary;
+$menu-item-active-background-color: transparent;
+$navbar-dropdown-item-hover-color: $secondary;
+$navbar-dropdown-item-hover-background-color: transparent;
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+html, body, main {
+  height: 100%;
+  overflow: hidden;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}

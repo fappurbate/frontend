@@ -1,33 +1,15 @@
 <template>
-  <v-btn outline round small :loading="loading" @click="onClick">
+  <button class="button is-rounded is-outlined is-primary"
+    :loading="loading" @click="onClick">
     Install
-
-    <v-dialog v-model="showError" width="400px">
-      <v-card>
-        <v-card-title primary-title class="headline">
-          Error
-        </v-card-title>
-        <v-card-text>
-          Failed to install extension: {{ error }}
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn flat @click="showError = false">
-            Dismiss
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-btn>
+  </button>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { Toast } from 'buefy/dist/components/toast';
 
 export default {
-  data: () => ({
-    showError: false
-  }),
   methods: {
     onClick() {
       const input = document.createElement('input');
@@ -44,7 +26,16 @@ export default {
 
       await this.$store.dispatch('extension/install', { file });
       if (this.error) {
-        this.showError = true;
+        this.$dialog.alert({
+          title: 'Error',
+          message: `Failed to install extension: ${this.error}`,
+          type: 'is-danger'
+        });
+      } else {
+        Toast.open({
+          message: 'Extension installed!',
+          type: 'is-success'
+        });
       }
     }
   },

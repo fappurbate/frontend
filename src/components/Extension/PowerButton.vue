@@ -1,24 +1,8 @@
 <template>
-  <v-btn flat :loading="loading" @click="onClick">
+  <a :class="{ [running ? 'stop' : 'start']: true, power: true }" @click="onClick">
+    <b-loading v-if="loading"></b-loading>
     {{ running ? 'Stop' : 'Start' }}
-
-    <v-dialog v-model="showError" width="400px">
-      <v-card>
-        <v-card-title primary-title class="headline">
-          Error
-        </v-card-title>
-        <v-card-text>
-          Failed to {{ running ? 'stop' : 'start' }} extension: {{ error }}
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn flat @click="showError = false">
-            Dismiss
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-btn>
+  </a>
 </template>
 
 <script>
@@ -28,8 +12,7 @@ export default {
   props: ['extension'],
   data: () => ({
     loading: false,
-    error: null,
-    showError: false
+    error: null
   }),
   computed: {
     running: state => state.extension.running
@@ -48,7 +31,11 @@ export default {
         this.error = null;
       } catch (error) {
         this.error = error.message;
-        this.showError = true;
+        this.$dialog.alert({
+          title: 'Error',
+          message: `Failed to ${running ? 'stop' : 'start'} extension: ${this.error}`,
+          type: 'is-danger'
+        });
       } finally {
         this.loading = false;
       }
@@ -57,5 +44,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../main";
+
+a.power {
+  transition: color 200ms;
+}
+
+a.start:hover {
+  color: $secondary;
+}
+
+a.stop:hover {
+  color: $warning;
+}
 </style>

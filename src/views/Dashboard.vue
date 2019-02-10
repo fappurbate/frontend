@@ -1,18 +1,14 @@
 <template>
-  <fragment>
-    <Navigation></Navigation>
-
-    <v-content>
-    </v-content>
-  </fragment>
+  <Layout>
+  </Layout>
 </template>
 
 <script>
-import Navigation from '../components/Navigation';
+import Layout from '../components/Layout';
 
 export default {
   components: {
-    Navigation
+    Layout
   }
 }
 </script>

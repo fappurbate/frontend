@@ -1,35 +1,19 @@
 <template>
-  <v-btn flat :loading="loading" @click="onClick">
+  <a class="remove" @click="onClick">
+    <b-loading v-if="loading"></b-loading>
     Remove
-
-    <v-dialog v-model="showError" width="400px">
-      <v-card>
-        <v-card-title primary-title class="headline">
-          Error
-        </v-card-title>
-        <v-card-text>
-          Failed to remove extension: {{ error }}
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn flat @click="showError = false">
-            Dismiss
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-btn>
+  </a>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { Toast } from 'buefy/dist/components/toast';
 
 export default {
   props: ['extension'],
   data: () => ({
     loading: false,
-    error: null,
-    showError: false
+    error: null
   }),
   methods: {
     async onClick() {
@@ -40,14 +24,31 @@ export default {
         this.error = null;
       } catch (error) {
         this.error = error.message;
-        this.showError = true;
+        this.$dialog.alert({
+          title: 'Error',
+          message: `Failed to remove extension: ${this.error}`,
+          type: 'is-danger'
+        });
       } finally {
         this.loading = false;
+        Toast.open({
+          message: 'Extension removed!',
+          type: 'is-success'
+        });
       }
     }
   }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../main";
+
+a.remove {
+  transition: color 200ms;
+}
+
+a.remove:hover {
+  color: $danger;
+}
 </style>

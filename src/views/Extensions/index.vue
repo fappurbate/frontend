@@ -1,22 +1,18 @@
 <template>
-  <fragment>
-    <Navigation />
-
-    <v-content>
-      <Toolbar />
-      <Grid />
-    </v-content>
-  </fragment>
+  <Layout>
+    <Toolbar />
+    <Grid />
+  </Layout>
 </template>
 
 <script>
-import Navigation from '../../components/Navigation';
+import Layout from '../../components/Layout';
 import Toolbar from './components/Toolbar';
 import Grid from './components/Grid';
 
 export default {
   components: {
-    Navigation,
+    Layout,
     Toolbar,
     Grid
   },

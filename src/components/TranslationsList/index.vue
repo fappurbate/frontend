@@ -1,11 +1,12 @@
 <template>
-  <v-expansion-panel popout>
-    <Translation v-for="translation of translations"
+  <div>
+    <Translation class="translation"
+      v-for="translation of translations"
       :key="`${translation.tabId}::${translation.msgId}`"
       :content="translation.content"
       :tabId="translation.tabId"
       :msgId="translation.msgId" />
-  </v-expansion-panel>
+  </div>
 </template>
 
 <script>
@@ -25,4 +26,7 @@ export default {
 </script>
 
 <style scoped>
+.translation {
+  margin-bottom: 1rem;
+}
 </style>

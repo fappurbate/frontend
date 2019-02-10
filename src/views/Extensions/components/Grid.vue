@@ -1,5 +1,5 @@
 <template>
-  <div class="grid mx-auto pa-3">
+  <div class="grid">
     <Extension
       v-for="extension of extensions"
       :key="extension._id"
@@ -26,7 +26,7 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 360px);
+  grid-template-columns: repeat(auto-fill, 340px);
   grid-gap: 1rem;
   place-content: center;
 

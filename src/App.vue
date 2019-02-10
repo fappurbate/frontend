@@ -1,10 +1,12 @@
 <template>
-  <v-app>
-    <router-view />
-  </v-app>
+  <router-view />
 </template>
 
 <script>
 export default {
 };
 </script>
+
+<style lang="scss">
+@import "main";
+</style>

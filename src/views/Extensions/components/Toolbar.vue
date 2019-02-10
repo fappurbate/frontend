@@ -1,7 +1,9 @@
 <template>
-  <v-toolbar dense flat>
-    <InstallButton />
-  </v-toolbar>
+  <div class="navbar">
+    <div class="navbar-item">
+      <InstallButton />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -15,4 +17,9 @@ export default {
 </script>
 
 <style scoped>
+.navbar {
+  height: 64px;
+  min-height: 0;
+  z-index: unset;
+}
 </style>

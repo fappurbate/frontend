@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as WS from '../common/ws';
 import { spawnNotification } from '../common/util';
+import { Toast } from 'buefy/dist/components/toast'
 
 const sym = Symbol();
 
@@ -48,9 +49,14 @@ export default {
 
         context.commit('add', { broadcaster, tabId, msgId, content });
 
+        Toast.open({
+          message: 'New translation request!',
+          type: 'is-info'
+        });
+
         const notification = await spawnNotification('New Translation Request', {
           body: content,
-          icon: '/assets/images/logo.png',
+          icon: '/logo.png',
           requireInteraction: true,
           renotify: true,
           tag: 'kothique-chaturbate-backend-translation-request'

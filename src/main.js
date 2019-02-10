@@ -1,6 +1,5 @@
 import Vue from 'vue';
-import './plugins/vuetify';
-import './plugins/fragment';
+import './plugins/buefy';
 import './common/monkeypatch';
 import App from './App';
 import router from './router';

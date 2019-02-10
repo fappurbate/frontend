@@ -1,36 +1,32 @@
 <template>
-  <fragment>
-    <Navigation />
+  <Layout>
+    <b-tabs class="details" v-model="activeTab" type="is-toggle-rounded" position="is-centered">
+      <template v-for="name, index in pageNames">
+        <b-tab-item class="tab-item" :label="capitalize(name)" :key="index">
+          <Page :name="name" :key="index" v-if="name in beenOpen"
+            v-show="tabs[activeTab] === name" />
+        </b-tab-item>
+      </template>
 
-    <v-content>
-      <v-tabs v-model="activeTab" centered slider-color="secondary">
-        <v-tab v-for="(name, index) of tabs" :key="index">
-          {{ name }}
-        </v-tab>
-      </v-tabs>
-      <v-tabs-items v-model="activeTab">
-        <v-tab-item v-for="(name, index) of pageNames" :key="index">
-          <Page v-if="name in beenOpen" :name="name" />
-        </v-tab-item>
-        <v-tab-item :key="pageNames.length">
-          <Debug v-if="'debug' in beenOpen" />
-        </v-tab-item>
-      </v-tabs-items>
-    </v-content>
-  </fragment>
+      <b-tab-item label="Debug" :key="tabs.length - 1">
+        <Debug v-if="'debug' in beenOpen" v-show="tabs[activeTab] === 'debug'" />
+      </b-tab-item>
+  </b-tabs>
+
+  </Layout>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
-import Navigation from '../../components/Navigation';
+import Layout from '../../components/Layout';
 import Debug from './components/Debug';
 import Page from './components/Page';
 import { capitalized } from '../../common/util';
 
 export default {
   components: {
-    Navigation,
+    Layout,
     Debug,
     Page
   },
@@ -54,6 +50,9 @@ export default {
   methods: {
     update(tab) {
       this.$set(this.beenOpen, tab, true);
+    },
+    capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.substr(1);
     }
   },
   watch: {
@@ -100,11 +99,28 @@ export default {
 
     this.activeTab = this.tabs.indexOf(this.$route.query.tab);
     this.update(this.$route.query.tab);
+  },
+  mounted() {
+    document.querySelector('.b-tabs.details > .tab-content')
+      .style['flex-grow'] = '1';
   }
 };
 </script>
 
 <style scoped>
+.details {
+  margin: 1.5rem;
+
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-item {
+  height: 100%;
+}
+
 .content {
   position: absolute;
   left: 0;
