@@ -19,7 +19,7 @@ export default {
 <style scoped>
 .navbar {
   height: 64px;
-  min-height: 0;
+  min-height: 64px;
   z-index: unset;
 }
 </style>

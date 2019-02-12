@@ -26,10 +26,12 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 340px);
+  grid-template-columns: repeat(auto-fill, 320px);
   grid-gap: 1rem;
-  place-content: center;
-
+  justify-content: center;
   max-width: 1400px;
+
+  overflow-y: auto;
+  padding: 1rem;
 }
 </style>

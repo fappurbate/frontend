@@ -13,7 +13,7 @@ export default {
       } catch (error) {
         console.error(`Failed to start extension.`, error);
         if (error.response) {
-          throw new CustomError(error.response.data);
+          throw new CustomError(error.response.data.message, error.response.data.data);
         } else {
           throw new CustomError(error.message);
         }
@@ -25,7 +25,7 @@ export default {
       } catch (error) {
         console.error(`Failed to stop extension.`, error);
         if (error.response) {
-          throw new CustomError(error.response.data);
+          throw new CustomError(error.response.data.message, error.response.data.data);
         } else {
           throw new CustomError(error.message);
         }
@@ -37,7 +37,7 @@ export default {
       } catch (error) {
         console.error(`Failed to remove extension.`, error);
         if (error.response) {
-          throw new CustomError(error.response.data);
+          throw new CustomError(error.response.data.message, error.response.data.data);
         } else {
           throw new CustomError(error.message);
         }
@@ -50,7 +50,7 @@ export default {
       } catch (error) {
         console.error(`Failed to load extension front page.`, error);
         if (error.response) {
-          throw new CustomError(error.response.data);
+          throw new CustomError(error.response.data.message, error.response.data.data);
         } else {
           throw new CustomError(error.message);
         }
@@ -63,7 +63,7 @@ export default {
       } catch (error) {
         console.error(`Failde to load extension logs.`, error);
         if (error.response) {
-          throw new CustomError(error.response.data);
+          throw new CustomError(error.response.data.message, error.response.data.data);
         } else {
           throw new CustomError(error.message);
         }
@@ -76,7 +76,7 @@ export default {
       } catch (error) {
         console.error(`Failed to load extension stream info:`, error);
         if (error.response) {
-          throw new CustomError(error.response.data);
+          throw new CustomError(error.response.data.message, error.response.data.data);
         } else {
           throw new CustomError(error.message);
         }

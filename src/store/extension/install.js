@@ -38,7 +38,7 @@ export default {
      } catch (error) {
        console.error(`Failed to install extension.`, error);
        if (error.response) {
-         context.commit('failure', error.response.data);
+         context.commit('failure', error.response.data.message);
        } else {
          context.commit('failure', error.message);
        }

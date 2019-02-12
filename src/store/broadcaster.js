@@ -13,7 +13,7 @@ export default {
       } catch (error) {
         console.error(`Failed to load broadcaster stream pages.`, error);
         if (error.response) {
-          throw new CustomError(error.response.data);
+          throw new CustomError(error.response.data.message, error.response.data.data);
         } else {
           throw new CustomError(error.message);
         }

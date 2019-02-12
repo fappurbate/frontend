@@ -54,3 +54,8 @@ main {
   display: flex;
   flex-direction: column;
 }
+
+pre {
+  background: unset !important;
+  padding: unset !important;
+}

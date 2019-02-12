@@ -33,7 +33,7 @@ export default {
         this.error = error.message;
         this.$dialog.alert({
           title: 'Error',
-          message: `Failed to ${running ? 'stop' : 'start'} extension: ${this.error}`,
+          message: `Failed to ${this.running ? 'stop' : 'start'} extension: ${this.error}`,
           type: 'is-danger'
         });
       } finally {
