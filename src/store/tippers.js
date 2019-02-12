@@ -26,19 +26,22 @@ export default {
       state.error = error;
     },
     tip(state, data) {
+      if (!state.data) { return; }
+
       const { tipper, amount } = data;
 
-      const index = state.data.findIndex(({ username }) => username === tipper);
+      const index = state.data.rows.findIndex(({ username }) => username === tipper);
       if (index !== -1) {
-        const oldAmount = state.data[index].amount;
-        Vue.set(state.data[index], 'amount', oldAmount + amount);
+        const oldAmount = state.data.rows[index].amount;
+        Vue.set(state.data.rows[index], 'amount', oldAmount + amount);
       } else {
-        state.data.push({
+        state.data.rows.push({
           username: tipper,
           amount
         });
       }
-      state.data.sort((e1, e2) => e2.amount - e1.amount);
+      state.data.rows.sort((e1, e2) => e2.amount - e1.amount);
+      Vue.set(state.data, 'rows', state.data.rows.slice(0, state.data.pageSize));
     }
   },
   actions: {
@@ -50,6 +53,7 @@ export default {
           const { username, amount } = data;
 
           if (info.chat.owner !== context.state.currentBroadcaster) { return; }
+          if (!info.chat.ready) { return; }
 
           context.commit('tip', { tipper: username, amount });
         }

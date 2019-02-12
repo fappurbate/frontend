@@ -1,6 +1,6 @@
 <template>
   <b-table
-      :data="tippers"
+      :data="tippers.rows"
       striped
       narrowed
       hoverable

@@ -2,14 +2,13 @@ module.exports = {
   devServer: {
     proxy: {
       '^/api': {
-        target: 'https://localhost:8887',
+        target: 'http://localhost:3000',
         changeOrigin: true
       },
-      '^/ws': {
-        target: 'wss://localhost:8888',
-        changeOrigin: true,
+      '^/socket.io': {
+        target: 'http://localhost:3000',
         ws: true,
-        pathRewrite: { '^/ws': '' }
+        changeOrigin: true
       }
     }
   }

@@ -30,7 +30,7 @@ export default {
 
       try {
         const response = await axios.get(`/api/broadcasters`);
-        context.commit('success', response.data);
+        context.commit('success', response.data.rows);
       } catch (error) {
         console.error(`Failed to update broadcasters.`, error);
         if (error.response) {

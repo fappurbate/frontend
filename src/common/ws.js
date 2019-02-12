@@ -1,13 +1,11 @@
 import RequestTarget from '@kothique/request-target';
+import io from 'socket.io-client';
 
 import { CustomError } from './errors';
 
-const RECONNECT_INTERVAL = 2000;
-const backend = `ws://${window.location.host}/ws`;
+const url = `http://${window.location.host}/app`;
 
-const queue = [];
-
-let ws = null;
+let socket = null;
 
 const eventHandlers = new EventTarget;
 export { eventHandlers as events };
@@ -15,123 +13,53 @@ export { eventHandlers as events };
 const requestHandlers = new RequestTarget;
 export { requestHandlers as requests };
 
-function sendMessage(msg) {
-  queue.push(msg);
-  sendQueue();
-}
-
-function sendQueue() {
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    queue.forEach(msg => ws.send(msg));
-    queue.length = 0;
-  }
-}
-
 export function emit(subject, data = null) {
-  const msg = {
-    type: 'event',
-    subject,
-    ...data && { data }
-  };
-
-  sendMessage(JSON.stringify(msg));
+  socket.emit('event', subject, data);
 }
 
-let nextRequestId = 0;
-const requests = {};
-
-export async function request(subject, data) {
-  const requestId = nextRequestId++;
-  const msg = {
-    type: 'request',
-    requestId,
-    subject,
-    ...data && { data }
-  };
-
-  sendMessage(JSON.stringify(msg));
-
+export function request(subject, data = null) {
   return new Promise((resolve, reject) => {
-    requests[requestId] = {
-      succeed: resolve,
-      fail: reject
-    };
+    socket.emit('request', subject, ...data ? [data] : [], (err, response) => {
+      if (err) { return reject(err); }
+      resolve(response);
+    })
   });
 }
 
-function respond(requestId, arg2 = null, arg3 = null) {
-  const error = arg3 && arg2;
-  const data = arg3 || arg2;
+(function connect() {
+  if (socket && socket.connected) { return; }
 
-  const msg = {
-    type: 'response',
-    requestId,
-    ...error && { error },
-    ...data && { data }
-  };
+  console.log(`WS: connecting to ${url}...`);
+  socket = io(url);
 
-  sendMessage(msg);
-}
-
-function connect() {
-  if (ws && ws.readyState !== WebSocket.CLOSED && ws.readyState !== WebSocket.CLOSING) { return; }
-
-  console.log(`WS: (re)connecting to ${backend}.`);
-  ws = new WebSocket(backend);
-
-  ws.addEventListener('open', () => {
-    console.log(`WS: connected to ${backend}.`);
-    sendQueue();
+  socket.on('connect', () => {
+    console.log(`WS: successfully (re)connected to ${url}.`);
   });
 
-  ws.addEventListener('close', () => {
-    console.log(`WS: connection closed.`);
-    setTimeout(connect, RECONNECT_INTERVAL);
-  });
+  socket.on('disconnect', reason => {
+    console.log(`WS: connection closed: ${reason}`);
 
-  ws.addEventListener('message', async event => {
-    const msg = JSON.parse(event.data);
-
-    if (msg.type === 'event') {
-      const { subject, data } = msg;
-      eventHandlers.dispatchEvent(new CustomEvent(subject, { detail: data }));
-    } else if (msg.type === 'request') {
-      const { subject, requestId, data } = msg;
-
-      try {
-        const result = await requestHandlers.request(subject, data);
-        respond(requestId, result);
-      } catch (error) {
-        respond(requestId, error.message, error.data);
-      }
-    } else if (msg.type === 'response') {
-      const { subject, requestId } = msg;
-
-      const callbacks = requests[requestId];
-      if (!callbacks) {
-        console.warn(`Got response to unknown request: ${requestId}.`);
-        return;
-      } else {
-        delete requests[requestId];
-      }
-      const { succeed, fail } = callbacks;
-
-      if (msg.error) {
-        const { error, data } = msg;
-        fail(new CustomError(error, data));
-      } else {
-        const { data } = msg;
-        succeed(data);
-      }
+    if (reason === 'io server disconnect') {
+      socket.connect();
     }
   });
-}
 
-function reconnect() {
-  if (ws && ws.readyState !== WebSocket.CLOSED && ws.readyState !== WebSocket.CLOSING) {
-    ws.close();
-  }
-  connect();
-}
+  socket.on('reconnecting', () => {
+    console.log(`WS: reconnecting to ${url}...`);
+  });
 
-connect();
+  socket.on('event', (subject, data) => {
+    eventHandlers.dispatchEvent(new CustomEvent(subject, { detail: data }));
+  });
+
+  socket.on('request', async (payload, ack) => {
+    const { subject, data } = payload;
+
+    try {
+      const result = await requestHandlers.request(subject, data);
+      ack({ data: result });
+    } catch (error) {
+      ack({ error: error.message, data: error.data });
+    }
+  });
+})();

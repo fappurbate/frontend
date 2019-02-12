@@ -29,14 +29,18 @@ export default {
       state.error = error;
     },
     add(state, data) {
-      state.data = [data, ...state.data];
+      if (!state.data) { return; }
+
+      state.data.rows = [data, ...state.data.rows];
     },
     remove(state, data) {
+      if (!state.data) { return; }
+
       const { tabId, msgId } = data;
 
-      const index = state.data.findIndex(t => t.tabId === tabId && t.msgId === msgId);
+      const index = state.data.rows.findIndex(t => t.tabId === tabId && t.msgId === msgId);
       if (index !== -1) {
-        state.data.splice(index, 1);
+        state.data.rows.splice(index, 1);
       }
     }
   },

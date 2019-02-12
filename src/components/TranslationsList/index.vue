@@ -1,7 +1,7 @@
 <template>
   <div>
     <Translation class="translation"
-      v-for="translation of translations"
+      v-for="translation of translations.rows"
       :key="`${translation.tabId}::${translation.msgId}`"
       :content="translation.content"
       :tabId="translation.tabId"
