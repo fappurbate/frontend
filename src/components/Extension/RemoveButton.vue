@@ -22,6 +22,10 @@ export default {
       try {
         await this.$store.dispatch(`extension/remove`, { id: this.extension._id });
         this.error = null;
+        Toast.open({
+          message: 'Extension removed!',
+          type: 'is-success'
+        });
       } catch (error) {
         this.error = error.message;
         this.$dialog.alert({
@@ -31,10 +35,6 @@ export default {
         });
       } finally {
         this.loading = false;
-        Toast.open({
-          message: 'Extension removed!',
-          type: 'is-success'
-        });
       }
     }
   }
