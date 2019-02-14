@@ -1,4 +1,4 @@
-# kck-frontend
+# Fappurbate Frontend
 
 ## Project setup
 ```

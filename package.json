@@ -1,11 +1,26 @@
 {
-  "name": "kck-frontend",
+  "name": "fappurbate-frontend",
   "version": "0.1.0",
-  "private": true,
+  "description": "Fappurbate Backend",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fappurbate/frontend.git"
+  },
+  "keywords": [
+    "chaturbate",
+    "webcam",
+    "fappurbate"
+  ],
+  "author": "Kothique Felixx <kothiue@protonmail.ch>",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/fappurbate/frontend/issues"
+  },
+  "homepage": "https://github.com/fappurbate/frontend#readme",
   "dependencies": {
     "@kothique/request-target": "^2.1.1",
     "axios": "^0.18.0",

@@ -1,6 +1,6 @@
 <template>
   <div class="start-screen">
-    <div class="kck-title">Kothique Chaturbate Kit</div>
+    <div class="fb-title">Fappurbate</div>
     <div class="chooser-container">
       <BroadcasterChooser />
     </div>
@@ -28,7 +28,7 @@ export default {
   bottom: 0;
 }
 
-.kck-title {
+.fb-title {
   font-size: 10vh;
   text-align: center;
   margin-top: 30vh;
@@ -37,7 +37,7 @@ export default {
   transition: color 200ms;
 }
 
-.kck-title:hover {
+.fb-title:hover {
   color: $secondary;
 }
 

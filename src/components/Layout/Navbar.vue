@@ -6,11 +6,8 @@
           <!-- <img src="/logo.png" class="navbar-logo" /> -->
           <a class="navbar-logo" @click="$router.push('/')"></a>
         </div>
-        <div class="navbar-item is-size-5 is-hidden-mobile">
-          Kothique Chaturbate Kit
-        </div>
-        <div class="navbar-item is-size-5 is-hidden-tablet">
-          KCK
+        <div class="navbar-item is-size-5">
+          Fappurbate
         </div>
       </div>
 

@@ -63,7 +63,7 @@ export default {
           icon: '/logo.png',
           requireInteraction: true,
           renotify: true,
-          tag: 'kothique-chaturbate-backend-translation-request'
+          tag: 'new-translation-request'
         });
         if (notification) {
           notification.addEventListener('click', () => {
