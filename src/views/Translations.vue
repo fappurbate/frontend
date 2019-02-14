@@ -13,12 +13,25 @@ export default {
     Layout,
     TranslationsList
   },
-  created() {
-    this.$store.dispatch('translations/update', this.$route.params.broadcaster);
+  watch: {
+    '$route.params.broadcaster'(to, from) {
+      this.$store.dispatch('translationsPage/update', {
+        broadcaster: to,
+        page: 1
+      });
+    },
+    '$route.query.page'(to, from) {
+      this.$store.dispatch('translationsPage/update', {
+        broadcaster: this.$route.params.broadcaster,
+        page: to
+      });
+    }
   },
-  beforeRouteUpdate(to, from, next) {
-    this.$store.dispatch('translations/update', to.params.broadcaster);
-    next();
+  created() {
+    this.$store.dispatch('translationsPage/update', {
+      broadcaster: this.$route.params.broadcaster,
+      page: Number(this.$route.query.page || 1)
+    });
   }
 }
 </script>

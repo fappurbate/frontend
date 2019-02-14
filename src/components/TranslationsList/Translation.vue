@@ -34,7 +34,7 @@ export default {
     onReply() {
       if (!this.translation) { return; }
 
-      this.$store.dispatch('translations/translate', {
+      this.$store.dispatch('translationsPage/translate', {
         tabId: this.tabId,
         msgId: this.msgId,
         translation: this.translation.trim()

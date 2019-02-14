@@ -59,11 +59,11 @@ export default {
         }
       });
     },
-    async update(context, broadcaster) {
+    async update(context, { page, broadcaster }) {
       context.commit('request', broadcaster);
 
       try {
-        const response = await axios.get(`/api/broadcaster/${broadcaster}/tippers`);
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/tippers?page=${page}&pageSize=50`);
         context.commit('success', response.data);
       } catch (error) {
         console.error(`Failed to update tippers.`, error);

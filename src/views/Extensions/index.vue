@@ -16,12 +16,25 @@ export default {
     Toolbar,
     Grid
   },
-  created() {
-    this.$store.dispatch('extensionsPage/update', this.$route.params.broadcaster);
+  watch: {
+    '$route.params.broadcaster'(to, from) {
+      this.$store.dispatch('extensionsPage/update', {
+        broadcaster: to,
+        page: 1
+      });
+    },
+    '$route.query.page'(to, from) {
+      this.$store.dispatch('extensionsPage/update', {
+        broadcaster: this.$route.params.broadcaster,
+        page: to
+      });
+    }
   },
-  beforeRouteUpdate(to, from, next) {
-    this.$store.dispatch('extensionsPage/update', to.params.broadcaster);
-    next();
+  created() {
+    this.$store.dispatch('extensionsPage/update', {
+      broadcaster: this.$route.params.broadcaster,
+      page: Number(this.$route.query.page || 1)
+    });
   }
 };
 </script>

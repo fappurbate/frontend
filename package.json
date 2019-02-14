@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/fappurbate/frontend#readme",
   "dependencies": {
-    "@kothique/request-target": "^2.1.1",
+    "@kothique/request-target": "^2.3.1",
     "axios": "^0.18.0",
     "buefy": "^0.7.2",
     "socket.io-client": "^2.2.0",

@@ -79,11 +79,11 @@ export default {
         context.commit('remove', { tabId, msgId });
       });
     },
-    async update(context, broadcaster) {
+    async update(context, { page, broadcaster }) {
       context.commit('request', broadcaster);
 
       try {
-        const response = await axios.get(`/api/broadcaster/${broadcaster}/translations`);
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/translations?page=${page}&pageSize=20`);
         context.commit('success', response.data);
       } catch (error) {
         console.error(`Failed to update translations.`, error);

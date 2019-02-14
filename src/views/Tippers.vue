@@ -13,12 +13,25 @@ export default {
     Layout,
     TippersList
   },
-  created() {
-    this.$store.dispatch('tippers/update', this.$route.params.broadcaster);
+  watch: {
+    '$route.params.broadcaster'(to, from) {
+      this.$store.dispatch('tippersPage/update', {
+        broadcaster: to,
+        page: 1
+      });
+    },
+    '$route.query.page'(to, from) {
+      this.$store.dispatch('tippersPage/update', {
+        broadcaster: this.$route.params.broadcaster,
+        page: to
+      });
+    }
   },
-  beforeRouteUpdate(to, from, next) {
-    this.$store.dispatch('tippers/update', to.params.broadcaster);
-    next();
+  created() {
+    this.$store.dispatch('tippersPage/update', {
+      broadcaster: this.$route.params.broadcaster,
+      page: Number(this.$route.query.page || 1)
+    });
   }
 }
 </script>
@@ -26,5 +39,10 @@ export default {
 <style scoped>
 .tippers-list {
   margin: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
 }
 </style>

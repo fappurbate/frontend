@@ -15,7 +15,9 @@ export default {
     error: null
   }),
   computed: {
-    running: state => state.extension.running
+    running() {
+      return this.extension.running;
+    }
   },
   methods: {
     async onClick() {

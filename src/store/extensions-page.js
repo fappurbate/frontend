@@ -77,11 +77,11 @@ export default {
         }
       });
     },
-    async update(context, broadcaster) {
+    async update(context, { page, broadcaster }) {
       context.commit('request', broadcaster);
 
       try {
-        const response = await axios.get(`/api/broadcaster/${broadcaster}/extensions`);
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/extensions?page=${page}&pageSize=10`);
         context.commit('success', response.data);
       } catch (error) {
         console.error(`Failed to update extensions.`, error);
