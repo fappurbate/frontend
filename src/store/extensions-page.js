@@ -29,25 +29,33 @@ export default {
     },
 
     add(state, extension) {
-      state.data.unshift(extension);
+      if (!state.data) { return; }
+
+      state.data.rows.unshift(extension);
     },
     remove(state, id) {
-      const index = state.data.findIndex(ext => ext._id === id);
+      if (!state.data) { return; }
+
+      const index = state.data.rows.findIndex(ext => ext._id === id);
       if (index !== -1) {
-        state.data.splice(index, 1);
+        state.data.rows.splice(index, 1);
       }
     },
 
     start(state, id) {
-      const index = state.data.findIndex(ext => ext._id === id);
+      if (!state.data) { return; }
+
+      const index = state.data.rows.findIndex(ext => ext._id === id);
       if (index !== -1) {
-        Vue.set(state.data[index], 'running', true);
+        Vue.set(state.data.rows[index], 'running', true);
       }
     },
     stop(state, id) {
-      const index = state.data.findIndex(ext => ext._id === id);
+      if (!state.data) { return; }
+
+      const index = state.data.rows.findIndex(ext => ext._id === id);
       if (index !== -1) {
-        Vue.set(state.data[index], 'running', false);
+        Vue.set(state.data.rows[index], 'running', false);
       }
     }
   },
