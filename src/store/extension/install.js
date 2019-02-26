@@ -27,7 +27,7 @@ export default {
 
      try {
        const formData = new FormData;
-       formData.append('extension', file);
+       formData.append('file', file);
 
        const response = await axios.post(`/api/extensions`, formData, {
          headers: {
