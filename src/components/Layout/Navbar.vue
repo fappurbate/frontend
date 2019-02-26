@@ -3,15 +3,12 @@
     <div class="container">
       <div class="navbar-brand">
         <div class="navbar-item">
-          <!-- <img src="/logo.png" class="navbar-logo" /> -->
           <a class="navbar-logo" @click="$router.push('/')"></a>
         </div>
-        <div class="navbar-item is-size-5">
+        <div class="navbar-item is-size-5 is-hidden-mobile">
           Fappurbate
         </div>
-      </div>
 
-      <div class="navbar-end">
         <div class="navbar-item has-dropdown is-hoverable is-bordered is-hidden-tablet">
           <a class="navbar-link is-arrowless is-size-5">
             {{ $route.name }}
@@ -25,10 +22,13 @@
             </a>
           </div>
         </div>
+      </div>
 
+      <div class="navbar-end">
         <div class="navbar-item has-dropdown is-hoverable is-bordered">
           <a class="navbar-link is-arrowless is-size-5">
             {{ $route.params.broadcaster }}
+            <span class="is-hidden-tablet" style="margin-right: 0.5rem;"></span>
           </a>
 
           <div class="navbar-dropdown is-right is-boxed">

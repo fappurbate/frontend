@@ -26,7 +26,7 @@
       order="is-centered"
       :total="tippers.total"
       :current="tippers.page"
-      @change="value => $router.push(`/${$route.params.broadcaster}/tippers?page=${value}`)">
+      @change="value => value > 0 && $router.push(`/${$route.params.broadcaster}/tippers?page=${value}`)">
     </b-pagination>
   </div>
 </template>

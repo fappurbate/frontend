@@ -3,13 +3,12 @@
     <b-tabs class="details" v-model="activeTab" type="is-toggle-rounded" position="is-centered">
       <template v-for="name, index in pageNames">
         <b-tab-item class="tab-item" :label="capitalize(name)" :key="index">
-          <Page :name="name" :key="index" v-if="name in beenOpen"
-            v-show="tabs[activeTab] === name" />
+          <Page :name="name" :key="index" v-if="name in beenOpen" />
         </b-tab-item>
       </template>
 
       <b-tab-item label="Debug" :key="tabs.length - 1">
-        <Debug v-if="'debug' in beenOpen" v-show="tabs[activeTab] === 'debug'" />
+        <Debug v-if="'debug' in beenOpen" />
       </b-tab-item>
   </b-tabs>
 

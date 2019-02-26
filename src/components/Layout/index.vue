@@ -32,6 +32,11 @@ export default {
           path: `/${this.$route.params.broadcaster}`
         },
         {
+          title: 'Gallery',
+          route: 'gallery',
+          path: `/${this.$route.params.broadcaster}/gallery`
+        },
+        {
           title: 'Tippers',
           route: 'tippers',
           path: `/${this.$route.params.broadcaster}/tippers`
