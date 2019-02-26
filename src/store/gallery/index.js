@@ -1,12 +1,20 @@
-import axios from 'axios';
 import querystring from 'querystring';
+import axios from 'axios';
+
+import images from './images';
+import audio from './audio';
 
 const CHUNK_SIZE = 2;
 
 export default {
   namespaced: true,
   actions: {
-    $init(context, store) { },
+    async $init(context, store) {
+      await Promise.all([
+        context.dispatch('images/$init', store),
+        context.dispatch('audio/$init', store)
+      ]);
+    },
     async getImages(context, { thumbnails, lastId = null }) {
       const queryParams = querystring.stringify({
         ...typeof thumbnails !== 'undefined' && { thumbnails },
@@ -43,6 +51,24 @@ export default {
           throw new CustomError(error.message);
         }
       }
+    },
+    async removeFile(context, options) {
+      const { fileId } = options;
+
+      try {
+        await axios.delete(`/api/gallery/${fileId}`);
+      } catch (error) {
+        console.error(`Failed to remove file from gallery.`, error);
+        if (error.response) {
+          throw new CustomError(error.response.data.message, error.response.data.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
     }
+  },
+  modules: {
+    images,
+    audio
   }
 };

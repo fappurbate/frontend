@@ -1,0 +1,97 @@
+<template>
+  <div class="grid-container">
+    <div class="images-grid" :style=
+        "{
+          'grid-template-columns': `repeat(auto-fill, calc(0.5rem + ${imageSize}px))`
+        }">
+      <template v-for="image of data">
+        <Thumbnail :image="image" />
+      </template>
+    </div>
+    <button class="load-more button is-text is-rounded" @click="$emit('more')">
+      More
+    </button>
+  </div>
+</template>
+
+<script>
+import { mapState } from 'vuex';
+
+import Thumbnail from './Thumbnail';
+
+export default {
+  components: {
+    Thumbnail
+  },
+  props: {
+    size: {
+      type: String,
+      validator: value => ['small', 'medium', 'large'].includes(value)
+    }
+  },
+  computed: {
+    ...mapState({
+      data: state => state.gallery.images.data
+    }),
+    imageSize() {
+      if (this.size === 'small') {
+        return 172;
+      } else if (this.size === 'medium') {
+        return 256;
+      } else if (this.size === 'large') {
+        return 512;
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.grid-container {
+  max-width: 1400px;
+
+  overflow: hidden;
+
+  display: relative;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.images-grid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  display: grid;
+  grid-gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+
+  overflow-y: scroll;
+  padding: 1rem;
+
+  padding-bottom: calc(1.5rem + 36px);
+}
+
+.load-more {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -150%);
+
+  transition: opacity 200ms;
+  opacity: 0.5;
+}
+
+.load-more:hover {
+  opacity: 1;
+}
+
+.load-more:focus {
+  border: 0;
+  box-shadow: none;
+}
+</style>

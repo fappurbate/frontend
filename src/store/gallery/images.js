@@ -19,10 +19,15 @@ export default {
       state.loading = true;
       state.thumbnails = thumbnails || state.thumbnails;
     },
-    success(state, data) {
+    success(state, { data, append = false }) {
       state.loading = false;
       state.error = null;
-      state.data = data;
+
+      if (append) {
+        state.data = [...state.data, ...data];
+      } else {
+        state.data = data;
+      }
     },
     failure(state, error) {
       state.loading = false;
@@ -32,7 +37,9 @@ export default {
     add(state, image) {
       if (!state.data) { return; }
 
-      state.data.unshift(image);
+      // TODO: optimize
+      state.data.push(image);
+      state.data.sort((i1, i2) => i1.id.localCompare(i2.id));
     },
     remove(state, id) {
       if (!state.data) { return; }
@@ -61,12 +68,14 @@ export default {
         }
       });
     },
-    async update(context, { thumbnails, lastId = null }) {
+    async update(context, options = {}) {
+      const { thumbnails, lastId = null } = options;
+
       context.commit('request', { thumbnails });
 
       try {
         const data = await context.dispatch('gallery/getImages', { thumbnails, lastId }, { root: true });
-        context.commit('success', data);
+        context.commit('success', { data, append: Boolean(lastId) });
       } catch (error) {
         context.commit('failure', error.message);
       }

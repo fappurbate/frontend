@@ -4,7 +4,6 @@
 
 <script>
 export default {
-created(){console.log('boom2')}
 };
 </script>
 

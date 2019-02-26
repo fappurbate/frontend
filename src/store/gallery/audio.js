@@ -14,10 +14,15 @@ export default {
     request(state) {
       state.loading = true;
     },
-    success(state, data) {
+    success(state, { data, append = false }) {
       state.loading = false;
       state.error = null;
-      state.data = data;
+
+      if (append) {
+        state.data = [...state.data, ...data];
+      } else {
+        state.data = data;
+      }
     },
     failure(state, error) {
       state.loading = false;
@@ -27,7 +32,10 @@ export default {
     add(state, audio) {
       if (!state.data) { return; }
 
-      state.data.unshift(audio);
+      // TODO: optimize
+      state.data.push(audio);
+      state.data.sort((a1, a2) => a1.id.localCompare(a2.id));
+
     },
     remove(state, id) {
       if (!state.data) { return; }
@@ -56,12 +64,14 @@ export default {
         }
       });
     },
-    async update(context, { lastId = null }) {
+    async update(context, options = {}) {
+      const { lastId = null } = options;
+
       context.commit('request');
 
       try {
         const data = await context.dispatch('gallery/getAudio', { lastId }, { root: true });
-        context.commit('success', data);
+        context.commit('success', { data, append: Boolean(lastId) });
       } catch (error) {
         context.commit('failure', error.message);
       }

@@ -1,14 +1,20 @@
 <template>
   <Layout>
-    <b-tabs class="details" v-model="activeTab" type="is-toggle-rounded" position="is-centered">
-      <b-tab-item class="tab-item" label="Images" key="images">
-        <Images v-if="beenOpen.images" />
-      </b-tab-item>
+    <div class="tabs is-toggle is-centered is-toggle-rounded">
+      <ul>
+        <li :class="{ 'is-active': activeTab === 'images' }" @click="onTabClick('images')">
+          <a>Images</a>
+        </li>
+        <li :class="{ 'is-active': activeTab === 'audio' }" @click="onTabClick('audio')">
+          <a>Audio</a>
+        </li>
+      </ul>
+    </div>
 
-      <b-tab-item class="tab-item" label="Audio" key="audio">
-        <Audio v-if="beenOpen.audio" />
-      </b-tab-item>
-    </b-tabs>
+    <div class="content">
+      <Images v-if="beenOpen.images" v-show="activeTab === 'images'" />
+      <Audio v-if="beenOpen.audio" v-show="activeTab === 'audio'" />
+    </div>
   </Layout>
 </template>
 
@@ -26,25 +32,22 @@ export default {
     Audio
   },
   data: () => ({
-    activeTab: 0,
-    tabs: ['images', 'audio'],
+    activeTab: null,
     beenOpen: {}
   }),
   methods: {
     update(tab) {
       this.$set(this.beenOpen, tab, true);
-    }
-  },
-  watch: {
-    async activeTab(to, from) {
-      this.$router.push(
-        {
+    },
+    onTabClick(tab) {
+      if (tab !== this.activeTab) {
+        this.activeTab = tab;
+        this.$router.push({
           name: 'gallery',
           params: this.$route.params,
-          query: { tab: this.tabs[to] }
-        },
-        () => this.update(this.tabs[to])
-      );
+          query: { tab }
+        }, () => this.update(tab));
+      }
     }
   },
   async created() {
@@ -53,22 +56,22 @@ export default {
         name: 'gallery',
         params: this.$route.params,
         query: {
-          tab: this.tabs[0]
+          tab: 'images'
         }
       });
     }
 
-    this.activeTab = this.tabs.indexOf(this.$route.query.tab);
+    this.activeTab = this.$route.query.tab;
     this.update(this.$route.query.tab);
-  },
-  mounted() {
-    document.querySelector('.b-tabs.details > .tab-content')
-      .style['flex-grow'] = '1';
   }
 };
 </script>
 
 <style scoped>
+.tabs {
+  margin: 1.5rem;
+}
+
 .details {
   margin: 1.5rem;
 
@@ -83,10 +86,7 @@ export default {
 }
 
 .content {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 48px;
-  bottom: 0;
+  position: relative;
+  flex-grow: 1;
 }
 </style>
