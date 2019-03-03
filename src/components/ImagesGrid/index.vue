@@ -5,7 +5,9 @@
           'grid-template-columns': `repeat(auto-fill, calc(0.5rem + ${imageSize}px))`
         }">
       <template v-for="image of data">
-        <Thumbnail :image="image" @preview="onPreview(image)" />
+        <Thumbnail :image="image" @preview="onPreview(image)"
+          :select="select" :multiple="multiple"
+          :value="value" @input="$emit('input', $event)" />
       </template>
     </div>
     <button class="load-more button is-text is-rounded" @click="$emit('more')">
@@ -29,10 +31,13 @@ export default {
     Thumbnail
   },
   props: {
+    select: { type: Boolean, default: false },
+    multiple: { type: Boolean, default: false },
     size: {
       type: String,
       validator: value => ['small', 'medium', 'large'].includes(value)
-    }
+    },
+    value: { validator: () => true }
   },
   data: () => ({
     previewFileId: null,

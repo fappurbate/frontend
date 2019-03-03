@@ -10,7 +10,7 @@ import ImagesGrid from '../../components/ImagesGrid';
 export default {
   components: {
     ImagesGrid
-  },
+  },data:()=>({sel:null}),
   computed: {
     ...mapState({
       lastId: state => {
