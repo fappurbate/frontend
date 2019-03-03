@@ -11,7 +11,7 @@
     <b-modal :active.sync="modalActive" has-modal-card>
       <div class="card">
         <div class="card-content">
-          <b-field label="Filename">
+          <b-field label="Name">
             <b-input ref="filename" v-model="filename" maxlength="100"></b-input>
           </b-field>
           <b-field class="upload-field">

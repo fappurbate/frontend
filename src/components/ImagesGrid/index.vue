@@ -5,12 +5,17 @@
           'grid-template-columns': `repeat(auto-fill, calc(0.5rem + ${imageSize}px))`
         }">
       <template v-for="image of data">
-        <Thumbnail :image="image" />
+        <Thumbnail :image="image" @preview="onPreview(image)" />
       </template>
     </div>
     <button class="load-more button is-text is-rounded" @click="$emit('more')">
       More
     </button>
+
+    <b-modal :active.sync="showPreview">
+      <img class="preview" :src="`/api/gallery/${previewFileId}/preview`"
+        @click="showPreview = false"/>
+    </b-modal>
   </div>
 </template>
 
@@ -27,6 +32,16 @@ export default {
     size: {
       type: String,
       validator: value => ['small', 'medium', 'large'].includes(value)
+    }
+  },
+  data: () => ({
+    previewFileId: null,
+    showPreview: false
+  }),
+  methods: {
+    onPreview(image) {
+      this.previewFileId = image.id;
+      this.showPreview = true;
     }
   },
   computed: {
@@ -74,6 +89,14 @@ export default {
   padding: 1rem;
 
   padding-bottom: calc(1.5rem + 36px);
+}
+
+.preview {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: zoom-out;
 }
 
 .load-more {

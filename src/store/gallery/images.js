@@ -40,7 +40,7 @@ export default {
 
       // TODO: optimize
       state.data.push(image);
-      state.data.sort((i1, i2) => i1.id.localeCompare(i2.id));
+      state.data.sort((i1, i2) => -i1.id.localeCompare(i2.id));
     },
     remove(state, id) {
       if (!state.data) { return; }
@@ -96,21 +96,6 @@ export default {
         return response.data;
       } catch (error) {
         console.error(`Failed to load image thumbnail from gallery.`, error);
-        if (error.response) {
-          throw new CustomError(error.response.data.message, error.response.data.data);
-        } else {
-          throw new CustomError(error.message);
-        }
-      }
-    },
-    async getPreview(context, options) {
-      const { fileId } = options;
-
-      try {
-        const response = await axios.get(`/api/gallery/${fileId}/preview`);
-        return response.data;
-      } catch (error) {
-        console.error(`Failde to load image preview from gallery.`, error);
         if (error.response) {
           throw new CustomError(error.response.data.message, error.response.data.data);
         } else {

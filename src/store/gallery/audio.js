@@ -34,7 +34,7 @@ export default {
 
       // TODO: optimize
       state.data.push(audio);
-      state.data.sort((a1, a2) => a1.id.localeCompare(a2.id));
+      state.data.sort((a1, a2) => -a1.id.localeCompare(a2.id));
 
     },
     remove(state, id) {

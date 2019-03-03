@@ -1,8 +1,8 @@
 <template>
   <div class="card">
     <div class="card-image">
-      <img :src="`data:image/png;base64,${image.thumbnail}`"
-        :title="image.filename" />
+      <img :src="`data:image/png;base64,${image.thumbnail}`" class="image"
+        :title="image.filename" @click="$emit('preview')" />
     </div>
 
     <hr />
@@ -11,8 +11,13 @@
       <b-dropdown hoverable>
         <b-icon slot="trigger" class="menu-icon" icon="dots-vertical" size="is-small" />
 
-        <b-dropdown-item class="item item-remove" @click="onRemove">
-          Remove
+        <b-dropdown-item class="item" @click="onShowOriginal(image.id)">
+          <b-icon class="dropdown-icon" icon="image" size="is-small"></b-icon>
+          <span>Original</span>
+        </b-dropdown-item>
+        <b-dropdown-item class="item item-remove" size="is-small" @click="onRemove">
+          <b-icon class="dropdown-icon" icon="trash-can" size="is-small"></b-icon>
+          <span>Remove</span>
         </b-dropdown-item>
       </b-dropdown>
     </div>
@@ -25,6 +30,9 @@ export default {
     image: Object
   },
   methods: {
+    onShowOriginal(fileId) {
+      window.open(`/api/gallery/${fileId}`, '_blank')
+    },
     async onRemove() {
       await this.$store.dispatch('gallery/removeFile', { fileId: this.image.id });
     }
@@ -34,6 +42,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../main";
+
+.image {
+  cursor: zoom-in;
+}
 
 .card {
   border-radius: 2px;
@@ -75,6 +87,13 @@ hr {
 
 .item {
   transition: color 200ms;
+
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-icon {
+  margin-right: 0.5rem;
 }
 
 .item:hover {
