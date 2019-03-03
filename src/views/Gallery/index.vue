@@ -18,7 +18,7 @@
         </li>
       </ul>
 
-      <b-field v-if="activeTab === 'images'" class="is-hidden-mobile">
+      <b-field v-if="activeTab === 'images'" class="image-size-switcher is-hidden-mobile">
         <b-radio-button v-model="imageSize"
           native-value="small"
           type="is-secondary">
@@ -38,7 +38,7 @@
         </b-radio-button>
       </b-field>
 
-      <b-dropdown v-model="imageSize" class="is-hidden-tablet">
+      <b-dropdown v-if="activeTab === 'images'" v-model="imageSize" class="is-hidden-tablet">
         <button class="button is-secondary" type="button" slot="trigger">
           <template v-for="{ name, icon } of imageSizes">
             <b-icon  v-if="imageSize === name" :icon="icon" :key="name"></b-icon>
@@ -96,6 +96,11 @@ export default {
       }
     ]
   }),
+  computed: {
+    ...mapState({
+      thumbnails: state => state.gallery.images.thumbnails
+    })
+  },
   watch: {
     imageSize(to, from) {
       this.$router.replace({
@@ -116,7 +121,7 @@ export default {
       if (tab !== this.activeTab) {
         this.activeTab = tab;
         if (tab === 'images') {
-          this.imageSize = this.imageSize || 'small';
+          this.imageSize = this.imageSize || this.thumbnails;
         }
 
         this.$router.push({
@@ -135,7 +140,7 @@ export default {
 
     const query = {
       tab,
-      ...tab === 'images' && { size: this.$route.query.size || 'small' }
+      ...tab === 'images' && { size: this.$route.query.size || this.thumbnails }
     };
     let updateQuery = false;
 
@@ -196,5 +201,9 @@ export default {
 
 .image-size-icon {
   margin: 0 auto !important;
+}
+
+.image-size-switcher {
+  margin-bottom: 0 !important;
 }
 </style>
