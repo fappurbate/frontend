@@ -1,5 +1,5 @@
 <template>
-  <ImagesGrid class="grid" @more="onMore" size="small" />
+  <ImagesGrid class="grid" @more="onMore" :size="$route.query.size" />
 </template>
 
 <script>
@@ -16,17 +16,30 @@ export default {
       lastId: state => {
         const data = state.gallery.images.data;
 
-        return data.length ? data[data.length - 1].id : null;
+        return data.length ? data[0].id : null;
       }
     })
   },
-  methods: {
-    onMore() {
-      this.$store.dispatch('gallery/images/update', { lastId: this.lastId });
+  watch: {
+    async '$route.query.size'(to, from) {
+      await this.update({ fresh: true, thumbnails: to });
     }
   },
-  created() {
-    this.$store.dispatch('gallery/images/update');
+  methods: {
+    async update(options = {}) {
+      const { fresh = false, thumbnails = this.$route.query.size } = options;
+
+      await this.$store.dispatch('gallery/images/update', {
+        ...!fresh && { lastId: this.lastId },
+        thumbnails
+      });
+    },
+    async onMore() {
+      await this.update();
+    }
+  },
+  async created() {
+    await this.update({ fresh: true });
   }
 };
 </script>

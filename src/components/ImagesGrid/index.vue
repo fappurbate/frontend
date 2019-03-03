@@ -35,11 +35,11 @@ export default {
     }),
     imageSize() {
       if (this.size === 'small') {
-        return 172;
+        return 128;
       } else if (this.size === 'medium') {
-        return 256;
+        return 172;
       } else if (this.size === 'large') {
-        return 512;
+        return 256;
       }
     }
   }

@@ -1,7 +1,15 @@
 <template>
   <Layout>
     <div class="tabs is-toggle is-centered is-toggle-rounded">
-      <ul>
+      <button class="button is-rounded is-secondary is-hidden-mobile">
+        <b-icon icon="plus"></b-icon>
+        <span>Upload</span>
+      </button>
+      <button class="button is-rounded is-secondary is-hidden-tablet">
+        <b-icon icon="plus"></b-icon>
+      </button>
+
+      <ul class="tabs-container">
         <li :class="{ 'is-active': activeTab === 'images' }" @click="onTabClick('images')">
           <a>Images</a>
         </li>
@@ -9,6 +17,39 @@
           <a>Audio</a>
         </li>
       </ul>
+
+      <b-field v-if="activeTab === 'images'" class="is-hidden-mobile">
+        <b-radio-button v-model="imageSize"
+          native-value="small"
+          type="is-secondary">
+          <b-icon class="image-size-icon" icon="image-size-select-small"></b-icon>
+        </b-radio-button>
+
+        <b-radio-button v-model="imageSize"
+            native-value="medium"
+            type="is-secondary">
+          <b-icon class="image-size-icon" icon="image-size-select-large"></b-icon>
+        </b-radio-button>
+
+        <b-radio-button v-model="imageSize"
+          native-value="large"
+          type="is-secondary">
+          <b-icon class="image-size-icon" icon="image-size-select-actual"></b-icon>
+        </b-radio-button>
+      </b-field>
+
+      <b-dropdown v-model="imageSize" class="is-hidden-tablet">
+        <button class="button is-secondary" type="button" slot="trigger">
+          <template v-for="{ name, icon } of imageSizes">
+            <b-icon  v-if="imageSize === name" :icon="icon"></b-icon>
+          </template>
+        </button>
+
+        <b-dropdown-item :value="name" v-for="{ name, title, icon } of imageSizes">
+          <b-icon :icon="icon"></b-icon>
+          <h3>{{ title }}</h3>
+        </b-dropdown-item>
+    </b-dropdown>
     </div>
 
     <div class="content">
@@ -32,9 +73,40 @@ export default {
     Audio
   },
   data: () => ({
+    beenOpen: {},
     activeTab: null,
-    beenOpen: {}
+    imageSize: null,
+
+    imageSizes: [
+      {
+        name: 'small',
+        title: 'Small',
+        icon: 'image-size-select-small'
+      },
+      {
+        name: 'medium',
+        title: 'Medium',
+        icon: 'image-size-select-large'
+      },
+      {
+        name: 'large',
+        title: 'Large',
+        icon: 'image-size-select-actual'
+      }
+    ]
   }),
+  watch: {
+    imageSize(to, from) {
+      this.$router.replace({
+        name: 'gallery',
+        params: this.$route.params,
+        query: {
+          tab: 'images',
+          size: to
+        }
+      }, () => this.update('images'));
+    }
+  },
   methods: {
     update(tab) {
       this.$set(this.beenOpen, tab, true);
@@ -42,43 +114,74 @@ export default {
     onTabClick(tab) {
       if (tab !== this.activeTab) {
         this.activeTab = tab;
+        if (tab === 'images') {
+          this.imageSize = this.imageSize || 'small';
+        }
+
         this.$router.push({
           name: 'gallery',
           params: this.$route.params,
-          query: { tab }
+          query: {
+            tab,
+            ...tab === 'images' && { size: this.imageSize }
+          }
         }, () => this.update(tab));
       }
     }
   },
   async created() {
+    const tab = this.$route.query.tab || 'images';
+
+    const query = {
+      tab,
+      ...tab === 'images' && { size: this.$route.query.size || 'small' }
+    };
+    let updateQuery = false;
+
     if (!this.$route.query.tab) {
+      updateQuery = true;
+    }
+
+    if (query.tab === 'images' && !this.$route.query.size) {
+      updateQuery = true;
+    }
+
+    if (updateQuery) {
       this.$router.replace({
         name: 'gallery',
         params: this.$route.params,
-        query: {
-          tab: 'images'
-        }
+        query
       });
     }
 
-    this.activeTab = this.$route.query.tab;
+    this.activeTab = query.tab;
+    if (query.size) {
+      this.imageSize = query.size;
+    }
     this.update(this.$route.query.tab);
   }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../main";
+
 .tabs {
-  margin: 1.5rem;
-}
-
-.details {
-  margin: 1.5rem;
-
-  flex-grow: 1;
+  padding: 1.5rem;
+  margin: 0;
 
   display: flex;
-  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+}
+
+.tabs-container {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-50%);
 }
 
 .tab-item {
@@ -88,5 +191,9 @@ export default {
 .content {
   position: relative;
   flex-grow: 1;
+}
+
+.image-size-icon {
+  margin: 0 auto !important;
 }
 </style>
