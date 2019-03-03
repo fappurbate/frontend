@@ -40,7 +40,7 @@ export default {
 
       // TODO: optimize
       state.data.push(image);
-      state.data.sort((i1, i2) => i1.id.localCompare(i2.id));
+      state.data.sort((i1, i2) => i1.id.localeCompare(i2.id));
     },
     remove(state, id) {
       if (!state.data) { return; }

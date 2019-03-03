@@ -1,13 +1,7 @@
 <template>
   <Layout>
     <div class="tabs is-toggle is-centered is-toggle-rounded">
-      <button class="button is-rounded is-secondary is-hidden-mobile">
-        <b-icon icon="plus"></b-icon>
-        <span>Upload</span>
-      </button>
-      <button class="button is-rounded is-secondary is-hidden-tablet">
-        <b-icon icon="plus"></b-icon>
-      </button>
+      <UploadButton />
 
       <ul class="tabs-container">
         <li :class="{ 'is-active': activeTab === 'images' }" @click="onTabClick('images')">
@@ -66,12 +60,14 @@ import { mapState } from 'vuex';
 import Layout from '../../components/Layout';
 import Images from './Images';
 import Audio from './Audio';
+import UploadButton from './components/UploadButton';
 
 export default {
   components: {
     Layout,
     Images,
-    Audio
+    Audio,
+    UploadButton
   },
   data: () => ({
     beenOpen: {},

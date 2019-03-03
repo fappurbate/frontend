@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import images from './images';
 import audio from './audio';
+import upload from './upload';
 
 const CHUNK_SIZE = 10;
 
@@ -12,7 +13,8 @@ export default {
     async $init(context, store) {
       await Promise.all([
         context.dispatch('images/$init', store),
-        context.dispatch('audio/$init', store)
+        context.dispatch('audio/$init', store),
+        context.dispatch('upload/$init', store)
       ]);
     },
     async getImages(context, { thumbnails, lastId = null }) {
@@ -65,10 +67,14 @@ export default {
           throw new CustomError(error.message);
         }
       }
+    },
+    upload(context, data) {
+      return context.dispatch('upload/do', data);
     }
   },
   modules: {
     images,
-    audio
+    audio,
+    upload
   }
 };
