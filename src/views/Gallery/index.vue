@@ -41,11 +41,12 @@
       <b-dropdown v-model="imageSize" class="is-hidden-tablet">
         <button class="button is-secondary" type="button" slot="trigger">
           <template v-for="{ name, icon } of imageSizes">
-            <b-icon  v-if="imageSize === name" :icon="icon"></b-icon>
+            <b-icon  v-if="imageSize === name" :icon="icon" :key="name"></b-icon>
           </template>
         </button>
 
-        <b-dropdown-item :value="name" v-for="{ name, title, icon } of imageSizes">
+        <b-dropdown-item :value="name" v-for="{ name, title, icon } of imageSizes"
+            :key="name">
           <b-icon :icon="icon"></b-icon>
           <h3>{{ title }}</h3>
         </b-dropdown-item>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import images from './images';
 import audio from './audio';
 
-const CHUNK_SIZE = 2;
+const CHUNK_SIZE = 10;
 
 export default {
   namespaced: true,

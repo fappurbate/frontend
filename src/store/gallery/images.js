@@ -1,4 +1,5 @@
 import axios from 'axios';
+import querystring from 'querystring';
 import Vue from 'vue';
 
 import * as WS from '../../common/ws';
@@ -52,10 +53,15 @@ export default {
   },
   actions: {
     $init(context, store) {
-      WS.events.addEventListener('gallery-add', event => {
+      WS.events.addEventListener('gallery-add', async event => {
         const { file } = event.detail;
 
         if (file.type === 'image') {
+          const thumbnail = await context.dispatch('getThumbnail', {
+            fileId: file.id
+          });
+          file.thumbnail = thumbnail;
+
           context.commit('add', file);
         }
       });
@@ -78,6 +84,38 @@ export default {
         context.commit('success', { data, append: Boolean(lastId) });
       } catch (error) {
         context.commit('failure', error.message);
+      }
+    },
+    async getThumbnail(context, options) {
+      const { fileId } = options;
+
+      const queryParams = querystring.stringify({ size: context.state.thumbnails });
+
+      try {
+        const response = await axios.get(`/api/gallery/${fileId}/thumbnail?${queryParams}`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to load image thumbnail from gallery.`, error);
+        if (error.response) {
+          throw new CustomError(error.response.data.message, error.response.data.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
+    },
+    async getPreview(context, options) {
+      const { fileId } = options;
+
+      try {
+        const response = await axios.get(`/api/gallery/${fileId}/preview`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failde to load image preview from gallery.`, error);
+        if (error.response) {
+          throw new CustomError(error.response.data.message, error.response.data.data);
+        } else {
+          throw new CustomError(error.message);
+        }
       }
     }
   }
