@@ -171,6 +171,7 @@ export default {
 .tabs {
   padding: 1.5rem;
   margin: 0;
+  margin-bottom: 0 !important;
 
   display: flex;
   align-items: center;

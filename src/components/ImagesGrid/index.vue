@@ -72,7 +72,7 @@ export default {
 
   overflow: hidden;
 
-  display: relative;
+  display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: space-between;
