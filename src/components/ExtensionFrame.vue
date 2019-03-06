@@ -150,6 +150,14 @@ export default {
             broadcaster: this.$route.params.broadcaster,
             message
           });
+        } else if (event.data.subject === 'gallery-select') {
+          const { requestId, type, multiple } = event.data.data;
+
+          const selection = await this.$gallery.select({ type, multiple });
+          this.frameWindow.postMessage({
+            subject: 'gallery-select',
+            data: { requestId, selection }
+          }, '*');
         }
       });
 
