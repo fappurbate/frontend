@@ -9,8 +9,8 @@
     </button>
 
     <b-modal :active.sync="modalActive" has-modal-card>
-      <div class="card">
-        <div class="card-content">
+      <div class="modal-card">
+        <section class="modal-card-body">
           <b-field label="Name">
             <b-input ref="filename" v-model="filename" maxlength="100"></b-input>
           </b-field>
@@ -27,7 +27,7 @@
               </section>
             </b-upload>
           </b-field>
-        </div>
+        </section>
       </div>
     </b-modal>
   </div>

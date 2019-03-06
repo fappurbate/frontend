@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import './plugins/buefy';
+import './plugins/gallery';
 import './common/monkeypatch';
 import App from './App';
 import router from './router';
