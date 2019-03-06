@@ -156,8 +156,95 @@ export default {
           const selection = await this.$gallery.select({ type, multiple });
           this.frameWindow.postMessage({
             subject: 'gallery-select',
-            data: { requestId, selection }
+            data: { requestId, data: selection }
           }, '*');
+        } else if (event.data.subject === 'request-thumbnail') {
+          const { requestId, id, size } = event.data.data;
+
+          try {
+            const thumbnail = await this.$store.dispatch('gallery/images/getThumbnail', {
+              fileId: id,
+              size
+            });
+            this.frameWindow.postMessage({
+              subject: 'response-thumbnail',
+              data: { requestId, data: thumbnail }
+            }, '*');
+          } catch (error) {
+            this.frameWindow.postMessage({
+              subject: 'response-thumbnail',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            }, '*');
+          }
+        } else if (event.data.subject === 'request-preview') {
+          const { requestId, id } = event.data.data;
+
+          try {
+            const preview = await this.$store.dispatch('gallery/images/getPreview', {
+              fileId: id,
+              encoding: 'base64'
+            });
+            this.frameWindow.postMessage({
+              subject: 'response-preview',
+              data: { requestId, data: preview }
+            }, '*');
+          } catch (error) {
+            this.frameWindow.postMessage({
+              subject: 'response-preview',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            }, '*');
+          }
+        } else if (event.data.subject === 'request-file') {
+          const { requestId, id } = event.data.data;
+
+          try {
+            const file = await this.$store.dispatch('gallery/getFile', {
+              fileId: id,
+              encoding: 'base64'
+            });
+            this.frameWindow.postMessage({
+              subject: 'response-file',
+              data: { requestId, data: file }
+            }, '*');
+          } catch (error) {
+            this.frameWindow.postMessage({
+              subject: 'response-file',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            }, '*');
+          }
+        } else if (event.data.subject === 'request-metadata') {
+          const { requestId, id } = event.data.data;
+
+          try {
+            const metadata = await this.$store.dispatch('gallery/getMetadata', {
+              fileId: id
+            });
+            this.frameWindow.postMessage({
+              subject: 'response-metadata',
+              data: { requestId, data: metadata }
+            }, '*');
+          } catch (error) {
+            this.frameWindow.postMessage({
+              subject: 'response-metadata',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            }, '*');
+          }
         }
       });
 

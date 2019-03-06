@@ -1,6 +1,7 @@
 import querystring from 'querystring';
 import axios from 'axios';
 
+import { CustomError } from '../../common/errors';
 import images from './images';
 import audio from './audio';
 import upload from './upload';
@@ -54,6 +55,23 @@ export default {
         }
       }
     },
+    async getFile(context, options) {
+      const { fileId, encoding } = options;
+
+      const queryParams = querystring.stringify({ ...encoding && { encoding } });
+
+      try {
+        const response = await axios.get(`/api/gallery/${fileId}?${queryParams}`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to load file from gallery.`, error);
+        if (error.response) {
+          throw new CustomError(error.response.data.message, error.response.data.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
+    },
     async removeFile(context, options) {
       const { fileId } = options;
 
@@ -61,6 +79,21 @@ export default {
         await axios.delete(`/api/gallery/${fileId}`);
       } catch (error) {
         console.error(`Failed to remove file from gallery.`, error);
+        if (error.response) {
+          throw new CustomError(error.response.data.message, error.response.data.data);
+        } else {
+          throw new CustomError(error.message);
+        }
+      }
+    },
+    async getMetadata(context, options) {
+      const { fileId } = options;
+
+      try {
+        const response = await axios.get(`/api/gallery/${fileId}/metadata`);
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to load metadata from gallery.`, error);
         if (error.response) {
           throw new CustomError(error.response.data.message, error.response.data.data);
         } else {
