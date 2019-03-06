@@ -10,8 +10,7 @@
       <b-tab-item label="Debug" :key="tabs.length - 1">
         <Debug v-if="'debug' in beenOpen" />
       </b-tab-item>
-  </b-tabs>
-
+    </b-tabs>
   </Layout>
 </template>
 

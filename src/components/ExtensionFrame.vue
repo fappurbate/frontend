@@ -253,8 +253,32 @@ export default {
           subject: 'extract-account-activity-stop'
         }, '*');
       });
+
+      WS.events.addEventListener('gallery-add', this.onWSGalleryAdd = event => {
+        const { file } = event.detail;
+
+        if (!this.frameWindow) { return; }
+
+        this.frameWindow.postMessage({
+          subject: 'gallery-add',
+          data: { file }
+        }, '*');
+      });
+
+      WS.events.addEventListener('gallery-remove', this.onWSGalleryRemove = event => {
+        const { file } = event.detail;
+
+        if (!this.frameWindow) { return; }
+
+        this.frameWindow.postMessage({
+          subject: 'gallery-remove',
+          data: { file }
+        }, '*');
+      });
     },
     teardownCommunication() {
+      WS.events.removeEventListener('gallery-remove', this.onWSGalleryRemove);
+      WS.events.removeEventListener('gallery-add', this.onWSGalleryAdd);
       WS.events.removeEventListener('extract-account-activity-stop', this.onWSExtractAccountActivityStop);
       WS.events.removeEventListener('extract-account-activity-start', this.onWSExtractAccountActivityStart);
       WS.events.removeEventListener('broadcast-stop', this.onWSBroadcastStop);
