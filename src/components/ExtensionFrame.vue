@@ -250,6 +250,59 @@ export default {
               }
             });
           }
+        } else if (event.data.subject === 'request-storage-get') {
+          const { requestId, keys } = event.data.data;
+
+          try {
+            const result = await WS.request('extensions-storage-get', {
+              extensionId: this.extension._id.toString(),
+              broadcaster: this.$route.params.broadcaster,
+              keys
+            });
+
+            this.postMessage({
+              subject: 'response-storage-get',
+              data: {
+                requestId,
+                data: result
+              }
+            });
+          } catch (error) {
+            this.postMessage({
+              subject: 'response-storage-get',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            });
+          }
+        } else if (event.data.subject === 'request-storage-get-all') {
+          const { requestId } = event.data.data;
+
+          try {
+            const result = await WS.request('extensions-storage-get-all', {
+              extensionId: this.extension._id.toString(),
+              broadcaster: this.$route.params.broadcaster
+            });
+
+            this.postMessage({
+              subject: 'response-storage-get-all',
+              data: {
+                requestId,
+                data: result
+              }
+            });
+          } catch (error) {
+            this.postMessage({
+              subject: 'response-storage-get-all',
+              data: {
+                requestId,
+                error: error.message,
+                ...error.data && { data: error.data }
+              }
+            });
+          }
         }
       });
 
@@ -367,8 +420,24 @@ export default {
           data: { file }
         });
       });
+
+      WS.events.addEventListener('extensions-storage-change', this.onWSExtensionsStorageChange = event => {
+        const { extensionId, broadcaster, key, oldValue, newValue } = event.detail;
+
+        if (!this.frameWindow()) { return; }
+
+        if (extensionId !== this.extension._id || broadcaster !== this.$route.params.broadcaster) {
+          return;
+        }
+
+        this.postMessage({
+          subject: 'storage-change',
+          data: { key, oldValue, newValue }
+        });
+      });
     },
     teardownCommunication() {
+      WS.events.removeEventListener('extensions-storage-change', this.onWSExtensionsStorageChange);
       WS.events.removeEventListener('gallery-remove', this.onWSGalleryRemove);
       WS.events.removeEventListener('gallery-add', this.onWSGalleryAdd);
       WS.events.removeEventListener('extract-account-activity-stop', this.onWSExtractAccountActivityStop);
