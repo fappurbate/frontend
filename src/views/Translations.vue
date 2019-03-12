@@ -30,7 +30,7 @@ export default {
   created() {
     this.$store.dispatch('translationsPage/update', {
       broadcaster: this.$route.params.broadcaster,
-      page: Number(this.$route.query.page || 1)
+      page: Number(this.$route.query.page) || 1
     });
   }
 }

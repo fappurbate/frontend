@@ -10,7 +10,8 @@ import * as WS from '../common/ws';
 export default {
   props: {
     srcdoc: String,
-    extension: Object
+    extension: Object,
+    name: String
   },
   data: () => ({
     updated: false
@@ -28,6 +29,7 @@ export default {
         ${this.extension.version
           ? `<meta data-name="version" data-content="${this.extension.version}" />`
           : ``}
+        <meta data-name="page-name" data-content="${this.name}" />
         <meta data-name="broadcaster" data-content="${this.$route.params.broadcaster}" />
         <meta data-name="init:is-broadcasting" data-content="${this.isBroadcasting}" />
         <meta data-name="init:is-extracting-account-activity" data-content="${this.isExtractingAccountActivity}" />

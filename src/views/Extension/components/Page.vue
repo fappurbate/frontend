@@ -1,5 +1,5 @@
 <template>
-  <Frame ref="frame" :srcdoc="data" :extension="extension" />
+  <Frame ref="frame" :srcdoc="data" :extension="extension" :name="name" />
 </template>
 
 <script>
