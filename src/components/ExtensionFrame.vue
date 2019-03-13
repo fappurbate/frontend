@@ -24,7 +24,7 @@ export default {
       if (!this.srcdoc) { return null; }
 
       const toInject = `
-        <meta data-name="id" data-content="${this.extension._id}" />
+        <meta data-name="id" data-content="${this.extension.id}" />
         <meta data-name="name" data-content="${this.extension.name}" />
         ${this.extension.version
           ? `<meta data-name="version" data-content="${this.extension.version}" />`
@@ -64,7 +64,7 @@ export default {
           const { receivers, subject, data } = event.data.data;
 
           WS.emit('extension-event', {
-            id: this.extension._id,
+            id: this.extension.id,
             broadcaster: this.$route.params.broadcaster,
             receivers,
             sender: this.name,
@@ -76,7 +76,7 @@ export default {
 
           try {
             const result = await WS.request('extension-request', {
-              id: this.extension._id,
+              id: this.extension.id,
               broadcaster: this.$route.params.broadcaster,
               sender: this.name,
               subject,
@@ -257,7 +257,7 @@ export default {
 
           try {
             const result = await WS.request('extensions-storage-get', {
-              extensionId: this.extension._id.toString(),
+              extensionId: this.extension.id,
               broadcaster: this.$route.params.broadcaster,
               keys
             });
@@ -284,7 +284,7 @@ export default {
 
           try {
             const result = await WS.request('extensions-storage-get-all', {
-              extensionId: this.extension._id.toString(),
+              extensionId: this.extension.id,
               broadcaster: this.$route.params.broadcaster
             });
 
@@ -313,7 +313,7 @@ export default {
 
         if (!this.frameWindow()) { return; }
 
-        if (id !== this.extension._id || broadcaster !== this.$route.params.broadcaster ||
+        if (id !== this.extension.id || broadcaster !== this.$route.params.broadcaster ||
             !receivers.includes(this.name)) {
           return;
         }
@@ -428,7 +428,7 @@ export default {
 
         if (!this.frameWindow()) { return; }
 
-        if (extensionId !== this.extension._id || broadcaster !== this.$route.params.broadcaster) {
+        if (extensionId !== this.extension.id || broadcaster !== this.$route.params.broadcaster) {
           return;
         }
 

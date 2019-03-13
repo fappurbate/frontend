@@ -2,19 +2,13 @@
   <div class="grid-container">
     <div class="grid">
       <Extension
-        v-for="extension of extensions.rows"
-        :key="extension._id"
+        v-for="extension of extensions"
+        :key="extension.id"
         :extension="extension" />
     </div>
-    <b-pagination
-      v-if="extensions"
-      class="pagination"
-      per-page="10"
-      order="is-centered"
-      :total="extensions.total"
-      :current="extensions.page"
-      @change="value => $router.push(`/${$route.params.broadcaster}/extensions?page=${value}`)">
-    </b-pagination>
+    <button class="load-more button is-text is-rounded" @click="$emit('more')">
+      More
+    </button>
   </div>
 </template>
 
@@ -59,9 +53,22 @@ export default {
   padding: 1rem;
 }
 
-.pagination {
-  height: 48px;
-  min-height: 48px;
-  margin-top: 0.5rem;
+.load-more {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -150%);
+
+  transition: opacity 200ms;
+  opacity: 0.5;
+}
+
+.load-more:hover {
+  opacity: 1;
+}
+
+.load-more:focus {
+  border: 0;
+  box-shadow: none;
 }
 </style>

@@ -39,7 +39,7 @@ export default {
     onLog(event) {
       const { extension, info, broadcaster } = event.detail;
 
-      if (extension._id === this.$route.params.extensionId &&
+      if (extension.id === this.$route.params.extensionId &&
           broadcaster === this.$route.params.broadcaster) {
         this.data.unshift(info);
       }

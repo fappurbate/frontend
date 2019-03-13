@@ -27,7 +27,7 @@ export default {
 
       try {
         await this.$store.dispatch(`extension/${action}`, {
-          id: this.extension._id,
+          id: this.extension.id,
           broadcaster: this.$route.params.broadcaster
         });
         this.error = null;

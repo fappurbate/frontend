@@ -37,7 +37,6 @@ export default {
     },
 
     add(state, image) {
-      // TODO: optimize
       state.data.push(image);
       state.data.sort((i1, i2) => -i1.id.localeCompare(i2.id));
     },

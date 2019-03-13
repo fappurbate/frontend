@@ -49,7 +49,7 @@ export default {
         if (!context.state.data) { return; }
 
         const { extension } = event.detail;
-        if (extension._id === context.state.data._id) {
+        if (extension.id === context.state.data.id) {
           context.commit('remove');
         }
       });
@@ -58,7 +58,7 @@ export default {
         if (!context.state.data) { return; }
 
         const { extension, broadcaster } = event.detail;
-        if (extension._id === context.state.data._id &&
+        if (extension.id === context.state.data.id &&
             context.state.currentBroadcaster === broadcaster) {
           context.commit('start');
         }
@@ -68,7 +68,7 @@ export default {
         if (!context.state.data) { return; }
 
         const { extension, broadcaster } = event.detail;
-        if (extension._id === context.state.data._id &&
+        if (extension.id === context.state.data.id &&
             context.state.currentBroadcaster === broadcaster) {
           context.commit('stop');
         }

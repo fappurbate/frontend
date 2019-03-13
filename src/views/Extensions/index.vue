@@ -1,11 +1,13 @@
 <template>
   <Layout>
     <Toolbar />
-    <Grid />
+    <Grid @more="onMore" />
   </Layout>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import Layout from '../../components/Layout';
 import Toolbar from './components/Toolbar';
 import Grid from './components/Grid';
@@ -16,25 +18,35 @@ export default {
     Toolbar,
     Grid
   },
+  computed: {
+    ...mapState({
+      lastId: state => {
+        const data = state.extensionsPage.data;
+
+        return data.length ? data[0].name : null;
+      }
+    })
+  },
   watch: {
-    '$route.params.broadcaster'(to, from) {
-      // this.$store.dispatch('extensionsPage/update', {
-      //   broadcaster: to,
-      //   page: 1
-      // });
-    },
-    '$route.query.page'(to, from) {
-      // this.$store.dispatch('extensionsPage/update', {
-      //   broadcaster: this.$route.params.broadcaster,
-      //   page: to || 1
-      // });
+    '$route.params.broadcaster'(broadcaster) {
+      this.update({ broadcaster, fresh: true });
     }
   },
-  created() {
-    this.$store.dispatch('extensionsPage/update', {
-      broadcaster: this.$route.params.broadcaster,
-      page: Number(this.$route.query.page) || 1
-    });
+  methods: {
+    async update(options = {}) {
+      const { broadcaster, fresh = false } = options;
+
+      await this.$store.dispatch('extensionsPage/update', {
+        broadcaster: broadcaster || this.$route.params.broadcaster,
+        ...!fresh && { lastId: this.lastId }
+      });
+    },
+    async onMore() {
+      await this.update();
+    }
+  },
+  async created() {
+    await this.update({ fresh: true });
   }
 };
 </script>

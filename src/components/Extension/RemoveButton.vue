@@ -20,7 +20,7 @@ export default {
       this.loading = true;
 
       try {
-        await this.$store.dispatch(`extension/remove`, { id: this.extension._id });
+        await this.$store.dispatch(`extension/remove`, { id: this.extension.id });
         this.error = null;
         Toast.open({
           message: 'Extension removed!',

@@ -13,7 +13,7 @@
     <footer class="card-footer">
       <RemoveButton :extension="extension" class="card-footer-item" />
       <PowerButton :extension="extension" class="card-footer-item" />
-      <a @click="$router.push(`/${broadcaster}/extension/${extension._id}`)"
+      <a @click="$router.push(`/${broadcaster}/extension/${extension.id}`)"
           class="details card-footer-item">
         Details
       </a>

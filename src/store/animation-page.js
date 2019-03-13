@@ -42,12 +42,12 @@ export default {
         if (context.state.currentBroadcaster === broadcaster) {
           try {
             const page = await context.dispatch('extension/getPage', {
-              id: extension._id,
+              id: extension.id,
               broadcaster,
               name: 'stream'
             }, { root: true });
 
-            context.commit('add', { id: extension._id, page });
+            context.commit('add', { id: extension.id, page });
           } catch (error) {
             console.error('Failed to load new stream page :(', error);
           }
@@ -57,7 +57,7 @@ export default {
       WS.events.addEventListener('extension-stop', event => {
         const { extension, broadcaster } = event.detail;
         if (context.state.currentBroadcaster === broadcaster) {
-          context.commit('remove', extension._id);
+          context.commit('remove', extension.id);
         }
       });
     },
