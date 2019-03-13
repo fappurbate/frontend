@@ -2,7 +2,7 @@
   <div class="tippers-container">
     <div class="data-container">
       <b-table
-          :data="tippers.rows"
+          :data="tippers"
           striped
           narrowed
           hoverable
@@ -19,15 +19,9 @@
         </template>
       </b-table>
     </div>
-    <b-pagination
-      v-if="tippers"
-      class="pagination"
-      per-page="50"
-      order="is-centered"
-      :total="tippers.total"
-      :current="tippers.page"
-      @change="value => value > 0 && $router.push(`/${$route.params.broadcaster}/tippers?page=${value}`)">
-    </b-pagination>
+    <button class="load-more button is-text is-rounded" @click="$emit('more')">
+      More
+    </button>
   </div>
 </template>
 
@@ -53,13 +47,26 @@ export default {
   overflow-y: auto;
 }
 
-.pagination {
-  height: 48px;
-  min-height: 48px;
-  margin-top: 0.5rem;
-}
-
 .amount {
   float: right;
+}
+
+.load-more {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -150%);
+
+  transition: opacity 200ms;
+  opacity: 0.5;
+}
+
+.load-more:hover {
+  opacity: 1;
+}
+
+.load-more:focus {
+  border: 0;
+  box-shadow: none;
 }
 </style>

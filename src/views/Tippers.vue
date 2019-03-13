@@ -1,10 +1,12 @@
 <template>
   <Layout>
-    <TippersList class="tippers-list" />
+    <TippersList class="tippers-list" @more="onMore" />
   </Layout>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import Layout from '../components/Layout';
 import TippersList from '../components/TippersList';
 
@@ -13,25 +15,35 @@ export default {
     Layout,
     TippersList
   },
+  computed: {
+    ...mapState({
+      lastId: state => {
+        const data = state.tippersPage.data;
+
+        return data.length ? data[0].username : null;
+      }
+    })
+  },
   watch: {
-    '$route.params.broadcaster'(to, from) {
-      this.$store.dispatch('tippersPage/update', {
-        broadcaster: to,
-        page: 1
-      });
-    },
-    '$route.query.page'(to, from) {
-      this.$store.dispatch('tippersPage/update', {
-        broadcaster: this.$route.params.broadcaster,
-        page: to
-      });
+    '$route.params.broadcaster'(broadcaster) {
+      this.update({ broadcaster, fresh: true });
     }
   },
-  created() {
-    this.$store.dispatch('tippersPage/update', {
-      broadcaster: this.$route.params.broadcaster,
-      page: Number(this.$route.query.page) || 1
-    });
+  methods: {
+    async update(options = {}) {
+      const { broadcaster, fresh = false } = options;
+
+      await this.$store.dispatch('tippersPage/update', {
+        broadcaster: broadcaster || this.$route.params.broadcaster,
+        ...!fresh && { lastId: this.lastId }
+      });
+    },
+    async onMore() {
+      await this.update();
+    }
+  },
+  async created() {
+    await this.update({ fresh: true });
   }
 }
 </script>

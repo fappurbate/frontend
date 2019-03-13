@@ -1,6 +1,9 @@
 import axios from 'axios';
+import querystring from 'querystring';
 import Vue from 'vue';
 import * as WS from '../common/ws';
+
+const CHUNK_SIZE = 20;
 
 export default {
   namespaced: true,
@@ -16,10 +19,15 @@ export default {
       state.loading = true;
       state.currentBroadcaster = broadcaster;
     },
-    success(state, data) {
+    success(state, { data, append = false }) {
       state.loading = false;
       state.error = null;
-      state.data = data;
+
+      if (append) {
+        state.data = [...state.data, ...data];
+      } else {
+        state.data = data;
+      }
     },
     failure(state, error) {
       state.loading = false;
@@ -30,18 +38,11 @@ export default {
 
       const { tipper, amount } = data;
 
-      const index = state.data.rows.findIndex(({ username }) => username === tipper);
+      const index = state.data.findIndex(({ username }) => username === tipper);
       if (index !== -1) {
-        const oldAmount = state.data.rows[index].amount;
-        Vue.set(state.data.rows[index], 'amount', oldAmount + amount);
-      } else {
-        state.data.rows.push({
-          username: tipper,
-          amount
-        });
+        const oldAmount = state.data[index].amount;
+        Vue.set(state.data[index], 'amount', oldAmount + amount);
       }
-      state.data.rows.sort((e1, e2) => e2.amount - e1.amount);
-      Vue.set(state.data, 'rows', state.data.rows.slice(0, state.data.pageSize));
     }
   },
   actions: {
@@ -59,12 +60,19 @@ export default {
         }
       });
     },
-    async update(context, { page, broadcaster }) {
+    async update(context, options) {
+      const { broadcaster, lastId = null } = options;
+
       context.commit('request', broadcaster);
 
+      const queryParams = querystring.stringify({
+        ...lastId && { lastId },
+        limit: CHUNK_SIZE
+      });
+
       try {
-        const response = await axios.get(`/api/broadcaster/${broadcaster}/tippers?page=${page}&pageSize=50`);
-        context.commit('success', response.data);
+        const response = await axios.get(`/api/broadcaster/${broadcaster}/tippers?${queryParams}`);
+        context.commit('success', { data: response.data, append: Boolean(lastId) });
       } catch (error) {
         console.error(`Failed to update tippers.`, error);
         if (error.response) {
