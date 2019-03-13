@@ -1,10 +1,12 @@
 <template>
   <Layout>
-    <TranslationsList class="translations-list" />
+    <TranslationsList class="translations-list" @more="onMore" />
   </Layout>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import Layout from '../components/Layout';
 import TranslationsList from '../components/TranslationsList';
 
@@ -13,25 +15,35 @@ export default {
     Layout,
     TranslationsList
   },
+  computed: {
+    ...mapState({
+      lastId: state => {
+        const data = state.translationsPage.data;
+
+        return data.length ? data[data.length - 1].id : null;
+      }
+    })
+  },
   watch: {
-    '$route.params.broadcaster'(to, from) {
-      this.$store.dispatch('translationsPage/update', {
-        broadcaster: to,
-        page: 1
-      });
-    },
-    '$route.query.page'(to, from) {
-      this.$store.dispatch('translationsPage/update', {
-        broadcaster: this.$route.params.broadcaster,
-        page: to
-      });
+    '$route.params.broadcaster'(broadcaster) {
+      this.update({ broadcaster, fresh: true });
     }
   },
-  created() {
-    this.$store.dispatch('translationsPage/update', {
-      broadcaster: this.$route.params.broadcaster,
-      page: Number(this.$route.query.page) || 1
-    });
+  methods: {
+    async update(options = {}) {
+      const { broadcaster, fresh = false } = options;
+
+      await this.$store.dispatch('translationsPage/update', {
+        broadcaster: broadcaster || this.$route.params.broadcaster,
+        ...!fresh && { lastId: this.lastId }
+      });
+    },
+    async onMore() {
+      await this.update();
+    }
+  },
+  async created() {
+    await this.update({ fresh: true });
   }
 }
 </script>

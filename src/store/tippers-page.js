@@ -34,8 +34,6 @@ export default {
       state.error = error;
     },
     tip(state, data) {
-      if (!state.data) { return; }
-
       const { tipper, amount } = data;
 
       const index = state.data.findIndex(({ username }) => username === tipper);

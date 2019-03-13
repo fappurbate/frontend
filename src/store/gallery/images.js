@@ -37,15 +37,11 @@ export default {
     },
 
     add(state, image) {
-      if (!state.data) { return; }
-
       // TODO: optimize
       state.data.push(image);
       state.data.sort((i1, i2) => -i1.id.localeCompare(i2.id));
     },
     remove(state, id) {
-      if (!state.data) { return; }
-
       const index = state.data.findIndex(image => image.id === id);
       if (index !== -1) {
         state.data.splice(index, 1);

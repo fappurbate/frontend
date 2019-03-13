@@ -2,21 +2,15 @@
   <div class="translations-container">
     <div class="data-container">
       <Translation class="translation"
-        v-for="translation of translations.rows"
+        v-for="translation of translations"
         :key="`${translation.tabId}::${translation.msgId}`"
         :content="translation.content"
         :tabId="translation.tabId"
         :msgId="translation.msgId" />
     </div>
-    <b-pagination
-      v-if="translations"
-      class="pagination"
-      per-page="20"
-      order="is-centered"
-      :total="translations.total"
-      :current="translations.page"
-      @change="value => $router.push(`/${$route.params.broadcaster}/translations?page=${value}`)">
-    </b-pagination>
+    <button class="load-more button is-text is-rounded" @click="$emit('more')">
+      More
+    </button>
   </div>
 </template>
 
@@ -53,10 +47,23 @@ export default {
   overflow-y: auto;
 }
 
-.pagination {
-  height: 48px;
-  min-height: 48px;
-  margin-top: 0.5rem;
+.load-more {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -150%);
+
+  transition: opacity 200ms;
+  opacity: 0.5;
+}
+
+.load-more:hover {
+  opacity: 1;
+}
+
+.load-more:focus {
+  border: 0;
+  box-shadow: none;
 }
 
 .translation:not(:last-child) {
