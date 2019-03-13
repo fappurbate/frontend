@@ -30,16 +30,11 @@ export default {
     },
 
     add(state, audio) {
-      if (!state.data) { return; }
-
-      // TODO: optimize
       state.data.push(audio);
       state.data.sort((a1, a2) => -a1.id.localeCompare(a2.id));
 
     },
     remove(state, id) {
-      if (!state.data) { return; }
-
       const index = state.data.findIndex(audio => audio.id === id);
       if (index !== -1) {
         state.data.splice(index, 1);
