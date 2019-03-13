@@ -47,11 +47,6 @@ export default {
           path: `/${this.$route.params.broadcaster}/translations`
         },
         {
-          title: 'Animation',
-          route: 'animation',
-          path: `/${this.$route.params.broadcaster}/animation`
-        },
-        {
           title: 'Extensions',
           route: 'extensions',
           path: `/${this.$route.params.broadcaster}/extensions`

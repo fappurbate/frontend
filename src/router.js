@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Animation from './views/Animation';
 import Start from './views/Start';
 import Dashboard from './views/Dashboard';
 import Extension from './views/Extension';
@@ -39,11 +38,6 @@ export default new Router({
       path: '/:broadcaster/translations',
       name: 'translations',
       component: Translations
-    },
-    {
-      path: '/:broadcaster/animation',
-      name: 'animation',
-      component: Animation
     },
     {
       name: 'extensions',
