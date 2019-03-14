@@ -1,56 +1,55 @@
 <template>
   <Layout>
-    <div class="tabs is-toggle is-centered is-toggle-rounded">
-      <UploadButton />
+    <b-tabs type="is-toggle-rounded" position="is-centered" v-model="activeTab"
+        class="gallery-tabs">
+      <div slot="controls-left" class="controls-container">
+        <UploadButton />
+      </div>
 
-      <ul class="tabs-container">
-        <li :class="{ 'is-active': activeTab === 'images' }" @click="onTabClick('images')">
-          <a>Images</a>
-        </li>
-        <li :class="{ 'is-active': activeTab === 'audio' }" @click="onTabClick('audio')">
-          <a>Audio</a>
-        </li>
-      </ul>
+      <b-tab-item label="Images" class="tab-item">
+        <Images v-if="beenOpen.images" />
+      </b-tab-item>
 
-      <b-field v-if="activeTab === 'images'" class="image-size-switcher is-hidden-mobile">
-        <b-radio-button v-model="imageSize"
-          native-value="small"
-          type="is-secondary">
-          <b-icon class="image-size-icon" icon="image-size-select-small"></b-icon>
-        </b-radio-button>
+      <b-tab-item label="Audio" class="tab-item">
+        <Audio v-if="beenOpen.audio" />
+      </b-tab-item>
 
-        <b-radio-button v-model="imageSize"
-            native-value="medium"
+      <div slot="controls-right" v-if="activeTab === 0" class="controls-container">
+        <b-field class="image-size-switcher is-hidden-mobile">
+          <b-radio-button v-model="imageSize"
+            native-value="small"
             type="is-secondary">
-          <b-icon class="image-size-icon" icon="image-size-select-large"></b-icon>
-        </b-radio-button>
+            <b-icon class="image-size-icon" icon="image-size-select-small"></b-icon>
+          </b-radio-button>
 
-        <b-radio-button v-model="imageSize"
-          native-value="large"
-          type="is-secondary">
-          <b-icon class="image-size-icon" icon="image-size-select-actual"></b-icon>
-        </b-radio-button>
-      </b-field>
+          <b-radio-button v-model="imageSize"
+              native-value="medium"
+              type="is-secondary">
+            <b-icon class="image-size-icon" icon="image-size-select-large"></b-icon>
+          </b-radio-button>
 
-      <b-dropdown v-if="activeTab === 'images'" v-model="imageSize" class="is-hidden-tablet">
-        <button class="button is-secondary" type="button" slot="trigger">
-          <template v-for="{ name, icon } of imageSizes">
-            <b-icon  v-if="imageSize === name" :icon="icon" :key="name"></b-icon>
-          </template>
-        </button>
+          <b-radio-button v-model="imageSize"
+            native-value="large"
+            type="is-secondary">
+            <b-icon class="image-size-icon" icon="image-size-select-actual"></b-icon>
+          </b-radio-button>
+        </b-field>
 
-        <b-dropdown-item :value="name" v-for="{ name, title, icon } of imageSizes"
-            :key="name">
-          <b-icon :icon="icon"></b-icon>
-          <h3>{{ title }}</h3>
-        </b-dropdown-item>
-    </b-dropdown>
-    </div>
+        <b-dropdown v-model="imageSize" class="is-hidden-tablet">
+          <button class="button is-secondary" type="button" slot="trigger">
+            <template v-for="{ name, icon } of imageSizes">
+              <b-icon  v-if="imageSize === name" :icon="icon" :key="name"></b-icon>
+            </template>
+          </button>
 
-    <div class="content">
-      <Images v-if="beenOpen.images" v-show="activeTab === 'images'" />
-      <Audio v-if="beenOpen.audio" v-show="activeTab === 'audio'" />
-    </div>
+          <b-dropdown-item :value="name" v-for="{ name, title, icon } of imageSizes"
+              :key="name">
+            <b-icon :icon="icon"></b-icon>
+            <h3>{{ title }}</h3>
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
+    </b-tabs>
   </Layout>
 </template>
 
@@ -74,6 +73,7 @@ export default {
     activeTab: null,
     imageSize: null,
 
+    tabs: ['images', 'audio'],
     imageSizes: [
       {
         name: 'small',
@@ -107,28 +107,30 @@ export default {
           size: to
         }
       }, () => this.update('images'));
+    },
+    activeTab(tabId, previousTabId) {
+      if (previousTabId === null) { return; }
+
+      const tab = this.tabs[tabId];
+
+      this.activeTab = tabId;
+      if (tab === 'images') {
+        this.imageSize = this.imageSize || this.thumbnails;
+      }
+
+      this.$router.push({
+        name: 'gallery',
+        params: this.$route.params,
+        query: {
+          tab,
+          ...tab === 'images' && { size: this.imageSize }
+        }
+      }, () => this.update(tab));
     }
   },
   methods: {
     update(tab) {
       this.$set(this.beenOpen, tab, true);
-    },
-    onTabClick(tab) {
-      if (tab !== this.activeTab) {
-        this.activeTab = tab;
-        if (tab === 'images') {
-          this.imageSize = this.imageSize || this.thumbnails;
-        }
-
-        this.$router.push({
-          name: 'gallery',
-          params: this.$route.params,
-          query: {
-            tab,
-            ...tab === 'images' && { size: this.imageSize }
-          }
-        }, () => this.update(tab));
-      }
     }
   },
   async created() {
@@ -156,11 +158,11 @@ export default {
       });
     }
 
-    this.activeTab = query.tab;
+    this.activeTab = this.tabs.indexOf(tab);
     if (query.size) {
       this.imageSize = query.size;
     }
-    this.update(this.$route.query.tab);
+    this.update(tab);
   }
 };
 </script>
@@ -168,32 +170,16 @@ export default {
 <style lang="scss" scoped>
 @import "../../main";
 
-.tabs {
+.gallery-tabs {
+  flex-grow: 1;
   padding: 1.5rem;
-  margin: 0;
-  margin-bottom: 0 !important;
+  padding-bottom: 0;
+}
 
+.controls-container {
   display: flex;
   align-items: center;
-
-  position: relative;
-}
-
-.tabs-container {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  transform: translateX(-50%);
-}
-
-.tab-item {
   height: 100%;
-}
-
-.content {
-  position: relative;
-  flex-grow: 1;
 }
 
 .image-size-icon {

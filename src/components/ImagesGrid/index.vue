@@ -92,7 +92,7 @@ export default {
   justify-content: center;
   align-items: flex-start;
 
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 1rem;
 
   padding-bottom: calc(1.5rem + 36px);
