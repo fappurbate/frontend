@@ -90,7 +90,7 @@ export default {
 
 .navbar-link, .navbar-brand > .navbar-item {
   background-color: transparent !important;
-  transition: color 200ms;
+  transition: color $color-change-duration;
 }
 
 .navbar-link:hover, .navbar-brand > .navbar-item:hover {

@@ -141,7 +141,7 @@ export default {
 
   padding: 0.5rem;
 
-  transition: border-color 200ms;
+  transition: border-color $color-change-duration;
 
   display: flex;
   align-items: center;
@@ -175,8 +175,8 @@ export default {
 .filename {
   font-weight: bold;
 }
+
 .menu-icon {
-  transition: red 200ms;
   padding: 0 0.5rem;
 }
 
@@ -185,8 +185,6 @@ export default {
 }
 
 .item {
-  transition: color 200ms;
-
   display: flex;
   align-items: center;
 }

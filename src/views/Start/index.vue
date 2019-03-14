@@ -34,7 +34,7 @@ export default {
   margin-top: 30vh;
   margin-bottom: 10vh;
   cursor: default;
-  transition: color 200ms;
+  transition: color $color-change-duration;
 }
 
 .fb-title:hover {

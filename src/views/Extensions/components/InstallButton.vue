@@ -7,7 +7,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { Toast } from 'buefy/dist/components/toast';
+import { Toast } from '@fappurbate/fappify/dist/components/toast';
 
 export default {
   methods: {

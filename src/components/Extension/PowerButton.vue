@@ -50,7 +50,7 @@ export default {
 @import "../../main";
 
 a.power {
-  transition: color 200ms;
+  transition: color $color-change-duration;
 }
 
 a.start:hover {

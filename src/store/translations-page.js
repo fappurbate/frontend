@@ -2,7 +2,7 @@ import axios from 'axios';
 import querystring from 'querystring';
 import * as WS from '../common/ws';
 import { spawnNotification } from '../common/util';
-import { Toast } from 'buefy/dist/components/toast';
+import { Toast } from '@fappurbate/fappify/dist/components/toast';
 
 const CHUNK_SIZE = 20;
 

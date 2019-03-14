@@ -5,7 +5,7 @@
       <b-icon icon="menu-down"></b-icon>
     </button>
 
-    <b-dropdown-item v-for="username in items" :key="username" class="item item-broadcaster">
+    <b-dropdown-item v-for="username in items" :key="username" class="item-broadcaster">
       <div class="username" @click="onChoose(username)">{{ username }}</div>
       <div class="remove" @click="onRemove(username)">
         <b-icon size="is-small" icon="minus"></b-icon>
@@ -13,7 +13,7 @@
     </b-dropdown-item>
 
     <hr class="dropdown-divider" v-if="items.length > 0" />
-    <b-dropdown-item key="__add" class="item item-add"
+    <b-dropdown-item key="__add" class="item-add"
         @click="onAdd">
       <b-icon class="remove" size="is-small" icon="plus"></b-icon>
     </b-dropdown-item>
@@ -72,10 +72,8 @@ export default {
 <style lang="scss" scoped>
 @import "../../../main";
 
-.item {
-  transition: color 200ms;
-  padding-right: 1rem !important;
-  background: transparent !important;
+.dropdown-item:hover {
+  color: initial !important;
 }
 
 .item-broadcaster {
@@ -84,7 +82,7 @@ export default {
 
   > .username {
    flex-grow: 1;
-   transition: color 200ms;
+   transition: color $color-change-duration;
  }
 
   > .username:hover {
@@ -92,7 +90,7 @@ export default {
   }
 
   > .remove {
-    transition: color 200ms;
+    transition: color $color-change-duration;
     font-size: 1.1rem;
   }
 
@@ -107,7 +105,6 @@ export default {
   padding-bottom: 0 !important;
   font-size: 1.4rem;
   line-height: 70%;
-  transition: color 200ms;
 }
 
 .item-add:hover {

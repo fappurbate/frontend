@@ -36,7 +36,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../main";
+
 .list-container {
   max-width: 1400px;
 
@@ -69,7 +71,7 @@ export default {
   top: 100%;
   transform: translate(-50%, -150%);
 
-  transition: opacity 200ms;
+  transition: opacity $color-change-duration;
   opacity: 0.5;
 }
 

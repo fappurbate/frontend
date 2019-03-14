@@ -43,7 +43,7 @@ export default {
 @import "../../main";
 
 a.details {
-  transition: color 200ms;
+  transition: color $color-change-duration;
 }
 
 a.details:hover {

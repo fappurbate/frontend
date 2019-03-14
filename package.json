@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/fappurbate/frontend#readme",
   "dependencies": {
+    "@fappurbate/fappify": "^1.2.1",
     "@kothique/request-target": "^2.3.3",
     "axios": "^0.18.0",
-    "buefy": "^0.7.2",
     "querystring": "^0.2.0",
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.7",

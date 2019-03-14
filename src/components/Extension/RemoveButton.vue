@@ -7,7 +7,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { Toast } from 'buefy/dist/components/toast';
+import { Toast } from '@fappurbate/fappify/dist/components/toast';
 
 export default {
   props: ['extension'],
@@ -45,7 +45,7 @@ export default {
 @import "../../main";
 
 a.remove {
-  transition: color 200ms;
+  transition: color $color-change-duration;
 }
 
 a.remove:hover {

@@ -30,7 +30,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../main";
+
 .translations-container {
   overflow: hidden;
   margin: 1.5rem;
@@ -53,7 +55,7 @@ export default {
   top: 100%;
   transform: translate(-50%, -150%);
 
-  transition: opacity 200ms;
+  transition: opacity $color-change-duration;
   opacity: 0.5;
 }
 

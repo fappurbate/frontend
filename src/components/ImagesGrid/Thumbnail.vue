@@ -74,7 +74,7 @@ export default {
   border-radius: 2px;
   padding: 0.5rem;
 
-  transition: border-color 200ms;
+  transition: border-color $color-change-duration;
   border: 1px solid rgba(0, 0, 0, 0);
 }
 
@@ -104,7 +104,6 @@ hr {
 }
 
 .menu-icon {
-  transition: red 200ms;
   padding: 0 0.5rem;
 }
 
@@ -113,8 +112,6 @@ hr {
 }
 
 .item {
-  transition: color 200ms;
-
   display: flex;
   align-items: center;
 }

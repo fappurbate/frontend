@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import './plugins/buefy';
+import './plugins/fappify';
 import './plugins/gallery';
 import './common/monkeypatch';
 import App from './App';
