@@ -2,11 +2,11 @@
   <div class="grid-container">
     <div class="grid">
       <Extension
-        v-for="extension of extensions"
+        v-for="extension of data.items"
         :key="extension.id"
         :extension="extension" />
     </div>
-    <MoreButton @more="$emit('more')" />
+    <MoreButton @more="$emit('more')" :disabled="data.all" />
   </div>
 </template>
 
@@ -23,7 +23,8 @@ export default {
   },
   computed: {
     ...mapState({
-      extensions: state => state.extensionsPage.data
+      data: state => state.extensionsPage.data,
+      loading: state => state.extensionsPage.loading
     })
   }
 };

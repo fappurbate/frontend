@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import Layout from '../../components/Layout';
 import Toolbar from './components/Toolbar';
@@ -19,12 +19,8 @@ export default {
     Grid
   },
   computed: {
-    ...mapState({
-      lastId: state => {
-        const data = state.extensionsPage.data;
-
-        return data.length ? data[0].name : null;
-      }
+    ...mapGetters({
+      lastId: 'extensionsPage/lastId'
     })
   },
   watch: {

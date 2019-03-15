@@ -12,7 +12,7 @@ export default {
   state: {
     loading: false,
     error: null,
-    data: [],
+    data: { items: [], all: false },
 
     currentBroadcaster: null
   },
@@ -26,7 +26,8 @@ export default {
       state.error = null;
 
       if (append) {
-        state.data = [...state.data, ...data];
+        Vue.set(state.data, 'items', [...state.data.items, ...data.items]);
+        Vue.set(state.data, 'all', data.all);
       } else {
         state.data = data;
       }
@@ -37,27 +38,32 @@ export default {
     },
 
     add(state, extension) {
-      state.data.push(extension);
-      state.data.sort((i1, i2) => -i1.id.localeCompare(i2.id));
+      state.data.items.unshift(extension);
     },
     remove(state, id) {
-      const index = state.data.findIndex(ext => ext.id === id);
+      const index = state.data.items.findIndex(ext => ext.id === id);
       if (index !== -1) {
-        state.data.splice(index, 1);
+        state.data.items.splice(index, 1);
       }
     },
 
     start(state, id) {
-      const index = state.data.findIndex(ext => ext.id === id);
+      const index = state.data.items.findIndex(ext => ext.id === id);
       if (index !== -1) {
-        Vue.set(state.data[index], 'running', true);
+        Vue.set(state.data.items[index], 'running', true);
       }
     },
     stop(state, id) {
-      const index = state.data.findIndex(ext => ext.id === id);
+      const index = state.data.items.findIndex(ext => ext.id === id);
       if (index !== -1) {
-        Vue.set(state.data[index], 'running', false);
+        Vue.set(state.data.items[index], 'running', false);
       }
+    }
+  },
+  getters: {
+    lastId: state => {
+      const lastExtension = state.data.items.slice(-1)[0];
+      return lastExtension ? lastExtension.createdAt : null
     }
   },
   actions: {
