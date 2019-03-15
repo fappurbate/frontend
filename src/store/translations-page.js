@@ -36,10 +36,6 @@ export default {
       state.loading = false;
       state.error = error;
     },
-    invalidateAll(state) {
-      Vue.set(state.data, 'all', false);
-    },
-
 
     add(state, data) {
       state.data.items.unshift(data);

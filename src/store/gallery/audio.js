@@ -29,12 +29,9 @@ export default {
       state.loading = false;
       state.error = error;
     },
-    invalidateAll(state) {
-      Vue.set(state.data, 'all', false);
-    },
 
     add(state, audio) {
-      state.data.items.push(audio);
+      state.data.items.unshift(audio);
     },
     remove(state, id) {
       const index = state.data.items.findIndex(audio => audio.id === id);
@@ -52,13 +49,11 @@ export default {
   actions: {
     $init(context, store) {
       WS.events.addEventListener('gallery-add', event => {
-        context.commit('invalidateAll');
+        const { file } = event.detail;
 
-        // const { file } = event.detail;
-        //
-        // if (file.type === 'audio') {
-        //   context.commit('add', file);
-        // }
+        if (file.type === 'audio') {
+          context.commit('add', file);
+        }
       });
 
       WS.events.addEventListener('gallery-remove', event => {

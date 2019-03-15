@@ -36,12 +36,9 @@ export default {
       state.loading = false;
       state.error = error;
     },
-    invalidateAll(state) {
-      Vue.set(state.data, 'all', false);
-    },
 
     add(state, image) {
-      // state.data.items.unshift(image);
+      state.data.items.unshift(image);
     },
     remove(state, id) {
       const index = state.data.items.findIndex(image => image.id === id);
@@ -59,18 +56,16 @@ export default {
   actions: {
     $init(context, store) {
       WS.events.addEventListener('gallery-add', async event => {
-        context.commit('invalidateAll');
+        const { file } = event.detail;
 
-        // const { file } = event.detail;
-        //
-        // if (file.type === 'image') {
-        //   const thumbnail = await context.dispatch('getThumbnail', {
-        //     fileId: file.id
-        //   });
-        //   file.thumbnail = thumbnail;
-        //
-        //   context.commit('add', file);
-        // }
+        if (file.type === 'image') {
+          const thumbnail = await context.dispatch('getThumbnail', {
+            fileId: file.id
+          });
+          file.thumbnail = thumbnail;
+
+          context.commit('add', file);
+        }
       });
 
       WS.events.addEventListener('gallery-remove', event => {
