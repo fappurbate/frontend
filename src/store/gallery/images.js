@@ -41,7 +41,7 @@ export default {
     },
 
     add(state, image) {
-      state.data.items.push(image);
+      // state.data.items.unshift(image);
     },
     remove(state, id) {
       const index = state.data.items.findIndex(image => image.id === id);

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import Layout from '../components/Layout';
 import TranslationsList from '../components/TranslationsList';
@@ -16,12 +16,8 @@ export default {
     TranslationsList
   },
   computed: {
-    ...mapState({
-      lastId: state => {
-        const data = state.translationsPage.data;
-
-        return data.length ? data[data.length - 1].id : null;
-      }
+    ...mapGetters({
+      lastId: 'translationsPage/lastId'
     })
   },
   watch: {

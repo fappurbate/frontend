@@ -2,13 +2,13 @@
   <div class="translations-container">
     <div class="data-container">
       <Translation class="translation"
-        v-for="translation of translations"
+        v-for="translation of data.items"
         :key="`${translation.tabId}::${translation.msgId}`"
         :content="translation.content"
         :tabId="translation.tabId"
         :msgId="translation.msgId" />
     </div>
-    <MoreButton @more="$emit('more')" />
+    <MoreButton @more="$emit('more')" :disabled="data.all" />
   </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     ...mapState({
-      translations: state => state.translationsPage.data
+      data: state => state.translationsPage.data
     })
   }
 }

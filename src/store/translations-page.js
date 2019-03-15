@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import axios from 'axios';
 import querystring from 'querystring';
 import * as WS from '../common/ws';
@@ -5,8 +6,6 @@ import { spawnNotification } from '../common/util';
 import { Toast } from '@fappurbate/fappify/dist/components/toast';
 
 const CHUNK_SIZE = 20;
-
-const sym = Symbol();
 
 export default {
   namespaced: true,
@@ -27,7 +26,8 @@ export default {
       state.error = null;
 
       if (append) {
-        state.data = [...state.data, ...data];
+        Vue.set(state.data, 'items', [...state.data.items, ...data.items]);
+        Vue.set(state.data, 'all', data.all);
       } else {
         state.data = data;
       }
@@ -36,26 +36,37 @@ export default {
       state.loading = false;
       state.error = error;
     },
-    // add(state, data) {
-    //   state.data = [data, ...state.data];
-    // },
+    invalidateAll(state) {
+      Vue.set(state.data, 'all', false);
+    },
+
+
+    add(state, data) {
+      state.data.items.unshift(data);
+    },
     remove(state, data) {
       const { tabId, msgId } = data;
 
-      const index = state.data.findIndex(t => t.tabId === tabId && t.msgId === msgId);
+      const index = state.data.items.findIndex(t => t.tabId === tabId && t.msgId === msgId);
       if (index !== -1) {
-        state.data.splice(index, 1);
+        state.data.items.splice(index, 1);
       }
+    }
+  },
+  getters: {
+    lastId: state => {
+      const lastTranslation = state.data.items.slice(-1)[0];
+      return lastTranslation ? lastTranslation.createdAt : null;
     }
   },
   actions: {
     $init(context, store) {
       WS.events.addEventListener('request-translation', async event => {
-        const { broadcaster, tabId, msgId, content } = event.detail;
+        const { broadcaster, tabId, msgId, content, createdAt } = event.detail;
 
         if (broadcaster !== context.state.currentBroadcaster) { return; }
 
-        // context.commit('add', { broadcaster, tabId, msgId, content });
+        context.commit('add', { broadcaster, tabId, msgId, content, createdAt });
 
         Toast.open({
           message: 'New translation request!',
