@@ -19,16 +19,20 @@
         </template>
       </b-table>
     </div>
-    <button class="load-more button is-text is-rounded" @click="$emit('more')">
-      More
-    </button>
+
+    <MoreButton @more="$emit('more')" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
+import MoreButton from './MoreButton';
+
 export default {
+  components: {
+    MoreButton
+  },
   computed: {
     ...mapState({
       tippers: state => state.tippersPage.data,
@@ -51,24 +55,5 @@ export default {
 
 .amount {
   float: right;
-}
-
-.load-more {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -150%);
-
-  transition: opacity $color-change-duration;
-  opacity: 0.5;
-}
-
-.load-more:hover {
-  opacity: 1;
-}
-
-.load-more:focus {
-  border: 0;
-  box-shadow: none;
 }
 </style>

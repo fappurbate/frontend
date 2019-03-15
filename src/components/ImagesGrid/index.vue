@@ -10,10 +10,7 @@
           :value="value" @input="$emit('input', $event)" />
       </template>
     </div>
-    <button class="load-more button is-text is-rounded" @click="$emit('more')"
-        :disabled="data.all">
-      More
-    </button>
+    <MoreButton @more="$emit('more')" :disabled="data.all" />
 
     <b-modal :active.sync="showPreview">
       <img class="preview" :src="`/api/gallery/${previewFileId}/preview`"
@@ -26,10 +23,12 @@
 import { mapState } from 'vuex';
 
 import Thumbnail from './Thumbnail';
+import MoreButton from '../MoreButton';
 
 export default {
   components: {
-    Thumbnail
+    Thumbnail,
+    MoreButton
   },
   props: {
     select: { type: Boolean, default: false },
@@ -105,24 +104,5 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
   cursor: zoom-out;
-}
-
-.load-more {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -150%);
-
-  transition: opacity $color-change-duration;
-  opacity: 0.5;
-}
-
-.load-more:hover {
-  opacity: 1;
-}
-
-.load-more:focus {
-  border: 0;
-  box-shadow: none;
 }
 </style>

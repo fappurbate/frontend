@@ -8,10 +8,7 @@
       </template>
     </div>
 
-    <button class="load-more button is-text is-rounded" @click="$emit('more')"
-        :disabled="data.all">
-      More
-    </button>
+    <MoreButton @more="$emit('more')" :disabled="data.all" />
   </div>
 </template>
 
@@ -19,10 +16,12 @@
 import { mapState } from 'vuex';
 
 import AudioPlayer from './AudioPlayer';
+import MoreButton from '../MoreButton';
 
 export default {
   components: {
-    AudioPlayer
+    AudioPlayer,
+    MoreButton
   },
   props: {
     select: { type: Boolean, default: false },
@@ -64,25 +63,6 @@ export default {
   padding: 1rem;
 
   padding-bottom: calc(1.5rem + 36px);
-}
-
-.load-more {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -150%);
-
-  transition: opacity $color-change-duration;
-  opacity: 0.5;
-}
-
-.load-more:hover {
-  opacity: 1;
-}
-
-.load-more:focus {
-  border: 0;
-  box-shadow: none;
 }
 
 .player:not(:last-child) {

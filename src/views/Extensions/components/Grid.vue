@@ -6,19 +6,20 @@
         :key="extension.id"
         :extension="extension" />
     </div>
-    <button class="load-more button is-text is-rounded" @click="$emit('more')">
-      More
-    </button>
+    <MoreButton @more="$emit('more')" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+
 import Extension from '../../../components/Extension';
+import MoreButton from '../../../components/MoreButton';
 
 export default {
   components: {
-    Extension
+    Extension,
+    MoreButton
   },
   computed: {
     ...mapState({
@@ -53,24 +54,5 @@ export default {
 
   overflow-y: auto;
   padding: 1rem;
-}
-
-.load-more {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -150%);
-
-  transition: opacity $color-change-duration;
-  opacity: 0.5;
-}
-
-.load-more:hover {
-  opacity: 1;
-}
-
-.load-more:focus {
-  border: 0;
-  box-shadow: none;
 }
 </style>

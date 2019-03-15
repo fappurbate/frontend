@@ -8,19 +8,20 @@
         :tabId="translation.tabId"
         :msgId="translation.msgId" />
     </div>
-    <button class="load-more button is-text is-rounded" @click="$emit('more')">
-      More
-    </button>
+    <MoreButton @more="$emit('more')" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+
 import Translation from './Translation';
+import MoreButton from '../MoreButton';
 
 export default {
   components: {
-    Translation
+    Translation,
+    MoreButton
   },
   computed: {
     ...mapState({
@@ -47,25 +48,6 @@ export default {
 .data-container {
   padding: 0.5rem;
   overflow-y: auto;
-}
-
-.load-more {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -150%);
-
-  transition: opacity $color-change-duration;
-  opacity: 0.5;
-}
-
-.load-more:hover {
-  opacity: 1;
-}
-
-.load-more:focus {
-  border: 0;
-  box-shadow: none;
 }
 
 .translation:not(:last-child) {
