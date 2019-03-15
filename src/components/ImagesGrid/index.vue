@@ -4,19 +4,20 @@
         "{
           'grid-template-columns': `repeat(auto-fill, calc(0.5rem + ${imageSize}px))`
         }">
-      <template v-for="image of data">
+      <template v-for="image of data.items">
         <Thumbnail :image="image" @preview="onPreview(image)"
           :select="select" :multiple="multiple"
           :value="value" @input="$emit('input', $event)" />
       </template>
     </div>
-    <button class="load-more button is-text is-rounded" @click="$emit('more')">
+    <button class="load-more button is-text is-rounded" @click="$emit('more')"
+        :disabled="data.all">
       More
     </button>
 
     <b-modal :active.sync="showPreview">
       <img class="preview" :src="`/api/gallery/${previewFileId}/preview`"
-        @click="showPreview = false"/>
+        @click="showPreview = false" />
     </b-modal>
   </div>
 </template>

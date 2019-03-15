@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import ImagesGrid from '../../components/ImagesGrid';
 
@@ -12,12 +12,8 @@ export default {
     ImagesGrid
   },
   computed: {
-    ...mapState({
-      lastId: state => {
-        const data = state.gallery.images.data;
-
-        return data.length ? data[0].id : null;
-      }
+    ...mapGetters({
+      lastId: 'gallery/images/lastId'
     })
   },
   watch: {

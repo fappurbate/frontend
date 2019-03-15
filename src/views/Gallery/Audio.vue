@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import AudioList from '../../components/AudioList';
 
@@ -12,12 +12,8 @@ export default {
     AudioList
   },
   computed: {
-    ...mapState({
-      lastId: state => {
-        const data = state.gallery.audio.data;
-
-        return data.length ? data[0].id : null;
-      }
+    ...mapGetters({
+      lastId: 'gallery/audio/lastId'
     })
   },
   watch: {

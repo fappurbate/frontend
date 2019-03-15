@@ -10,7 +10,7 @@ export default {
   state: {
     loading: false,
     error: null,
-    data: [],
+    data: { items: [], all: false },
 
     thumbnails: 'small'
   },
@@ -26,7 +26,8 @@ export default {
       state.error = null;
 
       if (append) {
-        state.data = [...state.data, ...data];
+        Vue.set(state.data, 'items', [...state.data.items, ...data.items]);
+        Vue.set(state.data, 'all', data.all);
       } else {
         state.data = data;
       }
@@ -35,31 +36,41 @@ export default {
       state.loading = false;
       state.error = error;
     },
+    invalidateAll(state) {
+      Vue.set(state.data, 'all', false);
+    },
 
     add(state, image) {
-      state.data.push(image);
-      state.data.sort((i1, i2) => -i1.id.localeCompare(i2.id));
+      state.data.items.push(image);
     },
     remove(state, id) {
-      const index = state.data.findIndex(image => image.id === id);
+      const index = state.data.items.findIndex(image => image.id === id);
       if (index !== -1) {
-        state.data.splice(index, 1);
+        state.data.items.splice(index, 1);
       }
+    }
+  },
+  getters: {
+    lastId: state => {
+      const lastImage = state.data.items.slice(-1)[0];
+      return lastImage ? lastImage.createdAt : null;
     }
   },
   actions: {
     $init(context, store) {
       WS.events.addEventListener('gallery-add', async event => {
-        const { file } = event.detail;
+        context.commit('invalidateAll');
 
-        if (file.type === 'image') {
-          const thumbnail = await context.dispatch('getThumbnail', {
-            fileId: file.id
-          });
-          file.thumbnail = thumbnail;
-
-          context.commit('add', file);
-        }
+        // const { file } = event.detail;
+        //
+        // if (file.type === 'image') {
+        //   const thumbnail = await context.dispatch('getThumbnail', {
+        //     fileId: file.id
+        //   });
+        //   file.thumbnail = thumbnail;
+        //
+        //   context.commit('add', file);
+        // }
       });
 
       WS.events.addEventListener('gallery-remove', event => {

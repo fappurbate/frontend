@@ -1,14 +1,15 @@
 <template>
   <div class="list-container">
     <div class="audio-list">
-      <template v-for="audio of data">
+      <template v-for="audio of data.items">
         <AudioPlayer :audio="audio" :select="select" :multiple="multiple"
           :value="value" @input="$emit('input', $event)"
           class="player" />
       </template>
     </div>
 
-    <button class="load-more button is-text is-rounded" @click="$emit('more')">
+    <button class="load-more button is-text is-rounded" @click="$emit('more')"
+        :disabled="data.all">
       More
     </button>
   </div>
