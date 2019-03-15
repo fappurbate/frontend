@@ -10,7 +10,7 @@ export default {
   state: {
     loading: false,
     error: null,
-    data: [],
+    data: { items: [], all: false },
 
     currentBroadcaster: null
   },
@@ -24,7 +24,8 @@ export default {
       state.error = null;
 
       if (append) {
-        state.data = [...state.data, ...data];
+        Vue.set(state.data, 'items', [...state.data.items, ...data.items]);
+        Vue.set(state.data, 'all', data.all);
       } else {
         state.data = data;
       }
@@ -33,14 +34,24 @@ export default {
       state.loading = false;
       state.error = error;
     },
+    invalidateAll(state) {
+      Vue.set(state.data, 'all', false);
+    },
+
     tip(state, data) {
       const { tipper, amount } = data;
 
-      const index = state.data.findIndex(({ username }) => username === tipper);
+      const index = state.data.items.findIndex(({ username }) => username === tipper);
       if (index !== -1) {
-        const oldAmount = state.data[index].amount;
-        Vue.set(state.data[index], 'amount', oldAmount + amount);
+        const oldAmount = state.data.items[index].amount;
+        Vue.set(state.data.items[index], 'amount', oldAmount + amount);
       }
+    }
+  },
+  getters: {
+    lastId: state => {
+      const lastTipper = state.data.items.slice(-1)[0];
+      return lastTipper ? lastTipper.username : null;
     }
   },
   actions: {

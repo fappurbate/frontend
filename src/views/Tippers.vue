@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import Layout from '../components/Layout';
 import TippersList from '../components/TippersList';
@@ -16,12 +16,8 @@ export default {
     TippersList
   },
   computed: {
-    ...mapState({
-      lastId: state => {
-        const data = state.tippersPage.data;
-
-        return data.length ? data[0].username : null;
-      }
+    ...mapGetters({
+      lastId: 'tippersPage/lastId'
     })
   },
   watch: {

@@ -1,19 +1,8 @@
 <template>
-  <button class="more-button button is-text is-rounded" @more="$emit('more')" :disabled="disabled">
+  <button class="more-button button is-text is-rounded" @click="$emit('more')">
     More
   </button>
 </template>
-
-<script>
-export default {
-  props: {
-    disabled: {
-      type: Boolean,
-      optional: true
-    }
-  }
-};
-</script>
 
 <style lang="scss" scoped>
 @import "../main";

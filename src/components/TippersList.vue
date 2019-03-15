@@ -2,7 +2,7 @@
   <div class="tippers-container">
     <div class="data-container">
       <b-table
-          :data="tippers"
+          :data="data.items"
           striped
           narrowed
           hoverable
@@ -20,7 +20,7 @@
       </b-table>
     </div>
 
-    <MoreButton @more="$emit('more')" />
+    <MoreButton @more="$emit('more')" :disabled="data.all" />
   </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     ...mapState({
-      tippers: state => state.tippersPage.data,
+      data: state => state.tippersPage.data,
       loading: state => state.tippersPage.loading
     })
   }
